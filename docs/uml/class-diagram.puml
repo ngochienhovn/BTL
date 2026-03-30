@@ -1,0 +1,97 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+title Auction System - UML Class Diagram (Sprint 1)
+
+package "shared (DTO/Protocol)" {
+  enum "AuctionState" as AuctionState {
+    OPEN
+    RUNNING
+    FINISHED
+  }
+
+  enum "MessageType" as MessageType {
+    PING
+    PONG
+    BID
+    BID_RESULT
+    AUCTION_STATE_UPDATE
+    ERROR
+  }
+
+  class "ClientToServerMessage" as ClientToServerMessage {
+    +MessageType type
+    +Long auctionId
+    +Long userId
+    +BigDecimal bidAmount
+  }
+
+  class "ServerToClientMessage" as ServerToClientMessage {
+    +MessageType type
+    +String error
+    +Long auctionId
+    +AuctionState auctionState
+    +BigDecimal currentPrice
+    +Long highestBidderId
+  }
+}
+
+package "server (Network/Runtime)" {
+  class "ServerMain" as ServerMain {
+    +main(String[] args)
+  }
+
+  class "SocketServer" as SocketServer {
+    -int port
+    -Gson gson
+    -ExecutorService executor
+    +start()
+  }
+}
+
+package "domain (DB Entities - thiết kế cho Sprint 1)" {
+  class "User" as User {
+    +Long id
+    +String username
+    +String passwordHash
+    +String role
+  }
+
+  class "Item" as Item {
+    +Long id
+    +Long sellerId
+    +String name
+    +String description
+  }
+
+  class "AuctionSession" as AuctionSession {
+    +Long id
+    +Long itemId
+    +Instant startTime
+    +Instant endTime
+    +AuctionState state
+    +BigDecimal currentPrice
+    +Long highestBidderId
+  }
+
+  class "BidTransaction" as BidTransaction {
+    +Long id
+    +Long auctionId
+    +Long bidderId
+    +BigDecimal bidAmount
+    +Instant createdAt
+  }
+}
+
+ServerMain --> SocketServer
+SocketServer ..> ClientToServerMessage : JSON(line-delimited)
+SocketServer ..> ServerToClientMessage : JSON(line-delimited)
+
+AuctionSession --> Item : itemId
+AuctionSession --> User : highestBidderId
+BidTransaction --> AuctionSession : auctionId
+BidTransaction --> User : bidderId
+
+@enduml
+
