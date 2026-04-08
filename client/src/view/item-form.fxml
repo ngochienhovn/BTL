@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="8.0" stylesheets="@/resources/css/home-page.css" xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.ItemFormController">
+    <padding>
+        <Insets top="16.0" right="16.0" bottom="16.0" left="16.0" />
+    </padding>
+    <Label styleClass="section-title" text="Item Form" />
+    <TextField fx:id="nameField" promptText="Tên sản phẩm" />
+    <Label fx:id="nameErrorLabel" styleClass="error-label" text="" />
+    <TextField fx:id="priceField" promptText="Giá khởi điểm" />
+    <Label fx:id="priceErrorLabel" styleClass="error-label" text="" />
+</VBox>
