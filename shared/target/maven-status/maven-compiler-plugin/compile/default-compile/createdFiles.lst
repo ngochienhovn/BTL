@@ -1,0 +1,3 @@
+com/ltnc/auction/shared/protocol/ClientToServerMessage.class
+com/ltnc/auction/shared/protocol/ServerToClientMessage.class
+com/ltnc/auction/shared/protocol/MessageType.class

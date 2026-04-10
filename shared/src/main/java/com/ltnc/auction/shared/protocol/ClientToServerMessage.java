@@ -1,0 +1,23 @@
+package com.ltnc.auction.shared.protocol;
+
+import java.math.BigDecimal;
+
+public class ClientToServerMessage {
+    // Type of message
+    public MessageType type;
+    // Fields for LOGIN message
+    public String email;
+    public String fullName;
+    public String password;
+    public String role;
+    // Fields for CREATE_ITEM message
+    public Long userId;
+    public Long itemId;
+    public Long sellerId;
+    public String sellerEmail;
+    public String typeOfItem;
+    public String itemName;
+    public String itemDescription;
+    public BigDecimal itemStartingBid;
+    public String imageUrl;
+}

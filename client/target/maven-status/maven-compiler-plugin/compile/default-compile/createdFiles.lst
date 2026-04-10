@@ -1,0 +1,16 @@
+client/app/controller/SellerItemsController$IItemService.class
+client/app/controller/SellerItemsController$User.class
+client/app/controller/SellerItemsController$InMemoryItemService.class
+client/app/controller/AuthController$RegisterResult.class
+client/app/controller/SellerItemsController.class
+client/app/controller/SellerItemsController$1.class
+client/app/controller/SellerItemsController$DummyAuctionService.class
+client/app/controller/AuthController$UserRole.class
+client/app/MainClient.class
+client/app/controller/AuthController$LoginResult.class
+client/app/controller/AuthController$InMemoryUserService.class
+client/app/controller/SellerItemsController$Item.class
+client/app/controller/AuthController.class
+client/app/controller/SellerItemsController$IAuctionService.class
+client/app/controller/AuthController$IUserService.class
+client/app/controller/AuthController$User.class
