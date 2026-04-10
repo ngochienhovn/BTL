@@ -1,25 +1,42 @@
-# BTL - Auction Socket Project
 
-## Modules
-- `shared`: JSON protocol (request/response message)
-- `server`: socket server, auth, role-based authorization, DAO/JDBC
-- `client`: JavaFX UI screens
 
-## Run server
-```bash
-mvn -pl server -am exec:java
-```
+# BTL - DAO Pattern & H2 Database
 
-## Build all
-```bash
-mvn clean package
-```
+## Giới thiệu
+Project này triển khai tầng truy cập dữ liệu (**DAO Pattern**) cho hệ thống đấu giá, sử dụng **JDBC** để kết nối với **H2 Database**.
 
-## Key deliverables
-- Role model: `ADMIN`, `SELLER`, `BIDDER` in `UserRole`
-- Auction state enum: `OPEN`, `RUNNING`, `FINISHED`
-- Auth authorization checks in `AuthService`
-- DAO + JDBC CRUD in `UserDAO`, `ItemDAO`, `DBConnection`
-- SQL init script: `server/src/main/resources/db/001_init_auction_tables.sql`
-- Socket endpoint docs: `docs/socket-endpoints.md`
-- UML docs: `docs/uml-class-diagram.md`
+Nội dung chính của phần này gồm:
+- Thiết kế kết nối CSDL bằng `DBConnection`
+- Khởi tạo schema bằng `SchemaInitializer`
+- Viết lớp `UserDAO` để thao tác với bảng `users`
+- Viết lớp `ItemDAO` để thao tác với bảng `items`
+- Thực hiện các thao tác CRUD cơ bản bằng câu lệnh SQL
+
+---
+
+## Công nghệ sử dụng
+- Java
+- JDBC
+- H2 Database
+- Maven
+
+---
+
+## Cấu trúc thư mục
+```text
+BTL
+├── db
+├── docs
+├── server
+│   ├── db
+│   └── src
+│       ├── dao
+│       │   ├── ItemDAO.java
+│       │   └── UserDAO.java
+│       └── db
+│           ├── DBConnection.java
+│           └── SchemaInitializer.java
+├── target
+├── pom.xml
+├── shared
+└── README.md
