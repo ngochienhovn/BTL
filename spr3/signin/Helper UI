@@ -1,0 +1,21 @@
+private void showError(Label label, String message) {
+    label.setText(message);
+    label.setVisible(true);
+    label.setManaged(true);
+}
+
+private void hideError(Label label) {
+    label.setVisible(false);
+    label.setManaged(false);
+}
+
+private void showSuccess(Label label, String message) {
+    label.setText(message);
+    label.setVisible(true);
+    label.setManaged(true);
+}
+
+private void hideSuccess(Label label) {
+    label.setVisible(false);
+    label.setManaged(false);
+}

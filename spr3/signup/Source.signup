@@ -1,0 +1,9 @@
+src/
+ └── app/
+     ├── controller/
+     │    └── AuthController.java
+     ├── service/
+     │    ├── AuthService.java
+     │    └── AuctionService.java (nếu có)
+     ├── model/ (nếu có)
+     └── Main.java

@@ -1,0 +1,118 @@
+package app.controller;
+
+import app.service.AuthService;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+
+public class AuthController {
+
+    // ====== FXML Binding ======
+    @FXML
+    private TextField signInEmailField;
+
+    @FXML
+    private PasswordField signInPasswordField;
+
+    @FXML
+    private Label signInEmailErrorLabel;
+
+    @FXML
+    private Label signInPasswordErrorLabel;
+
+    @FXML
+    private Button signInSubmitButton;
+
+    // ====== INIT ======
+    @FXML
+    public void initialize() {
+        resetErrors();
+
+        // validate realtime khi user nhập
+        signInEmailField.textProperty().addListener((obs, oldVal, newVal) -> {
+            hideError(signInEmailErrorLabel);
+        });
+
+        signInPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            hideError(signInPasswordErrorLabel);
+        });
+    }
+
+    // ====== ACTIONS ======
+
+    @FXML
+    private void onSubmitSignIn() {
+        String email = signInEmailField.getText().trim();
+        String password = signInPasswordField.getText().trim();
+
+        resetErrors();
+
+        // validate
+        String emailError = AuthService.validateEmail(email);
+        String passwordError = AuthService.validatePassword(password);
+
+        boolean hasError = false;
+
+        if (emailError != null) {
+            showError(signInEmailErrorLabel, emailError);
+            hasError = true;
+        }
+
+        if (passwordError != null) {
+            showError(signInPasswordErrorLabel, passwordError);
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        // xử lý login
+        boolean success = AuthService.login(email, password);
+
+        if (success) {
+            System.out.println("✅ Đăng nhập thành công");
+
+            // TODO: chuyển scene (Home Page)
+            // SceneSwitcher.switchTo("home.fxml");
+
+        } else {
+            showError(signInPasswordErrorLabel, "Sai email hoặc mật khẩu");
+        }
+    }
+
+    @FXML
+    private void onBackHome() {
+        System.out.println("⬅ Quay về trang chủ");
+
+        // TODO: chuyển về home
+        // SceneSwitcher.switchTo("home.fxml");
+    }
+
+    @FXML
+    private void onOpenSignUp() {
+        System.out.println("➡ Mở trang đăng ký");
+
+        // TODO: chuyển sang sign up
+        // SceneSwitcher.switchTo("signup.fxml");
+    }
+
+    // ====== HELPER METHODS ======
+
+    private void showError(Label label, String message) {
+        label.setText(message);
+        label.setVisible(true);
+        label.setManaged(true);
+    }
+
+    private void hideError(Label label) {
+        label.setText("");
+        label.setVisible(false);
+        label.setManaged(false);
+    }
+
+    private void resetErrors() {
+        hideError(signInEmailErrorLabel);
+        hideError(signInPasswordErrorLabel);
+    }
+}

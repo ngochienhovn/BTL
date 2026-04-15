@@ -1,0 +1,12 @@
+app/
+ ├── controller/
+ │    ├── AuthController.java
+ │    └── HomeController.java
+ ├── service/
+ │    └── AuthService.java
+ ├── util/
+ │    └── SceneSwitcher.java
+ ├── view/
+ │    ├── login.fxml
+ │    └── home.fxml
+ └── Main.java

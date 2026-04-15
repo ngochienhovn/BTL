@@ -1,0 +1,32 @@
+package app.model;
+
+import javafx.beans.property.*;
+
+public class Item {
+
+    private StringProperty name = new SimpleStringProperty();
+    private StringProperty description = new SimpleStringProperty();
+    private DoubleProperty currentBid = new SimpleDoubleProperty();
+    private StringProperty currentUser = new SimpleStringProperty();
+
+    public Item(String name, String description, double startBid) {
+        this.name.set(name);
+        this.description.set(description);
+        this.currentBid.set(startBid);
+        this.currentUser.set("System");
+    }
+
+    public String getName() { return name.get(); }
+    public double getCurrentBid() { return currentBid.get(); }
+    public String getCurrentUser() { return currentUser.get(); }
+
+    public void setBid(double bid, String user) {
+        this.currentBid.set(bid);
+        this.currentUser.set(user);
+    }
+
+    @Override
+    public String toString() {
+        return getName() + " | $" + getCurrentBid() + " | " + getCurrentUser();
+    }
+}
