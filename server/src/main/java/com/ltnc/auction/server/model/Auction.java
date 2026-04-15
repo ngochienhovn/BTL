@@ -16,7 +16,7 @@ public class Auction extends Entity {
     private String highestBidderId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Lisr<BidTransaction> bidTransactions = new ArrayList<>();
+    private List<BidTransaction> bidTransactions = new ArrayList<>();
     private final ReentrantLock bidLock = new ReentrantLock();
 
     public Auction() {}

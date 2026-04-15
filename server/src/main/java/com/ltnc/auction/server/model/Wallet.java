@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class Wallet extends Entity {
 
-      private String userId;
+    private String userId;
     private BigDecimal balance;
     private BigDecimal reserved;
     private LocalDateTime updatedAt;

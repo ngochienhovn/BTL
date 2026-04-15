@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class WalletTransaction extend Entity {
 
-     private String userId;
+    private String userId;
     private String type; 
     private BigDecimal amount;
     private Long refAuctionId;
