@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="app.controller.AuctionDetailController">
+
+    <!-- ===== TOP: Auction Info ===== -->
+    <top>
+        <VBox spacing="10" padding="10">
+            <Label fx:id="titleLabel" text="Auction Title"
+                style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Label fx:id="currentBidLabel" text="Current Bid: 0" />
+            <Label fx:id="statusLabel" text="Status: OPEN" />
+        </VBox>
+    </top>
+
+    <!-- ===== CENTER: Bid + History ===== -->
+    <center>
+        <VBox spacing="10" padding="10">
+
+            <!-- Bid Input -->
+            <HBox spacing="10">
+                <TextField fx:id="bidField" promptText="Enter your bid" />
+                <Button text="Place Bid" onAction="#onPlaceBid" />
+            </HBox>
+
+            <!-- Bid History -->
+            <Label text="Bid History" />
+            <ListView fx:id="bidHistoryList" />
+
+        </VBox>
+    </center>
+
+    <!-- ===== RIGHT: Wallet ===== -->
+    <right>
+        <VBox spacing="10" padding="10" style="-fx-background-color: #f5f5f5;">
+            <Label text="Wallet" style="-fx-font-weight: bold;" />
+
+            <Label fx:id="balanceLabel" text="Balance: 0" />
+            <Label fx:id="reservedLabel" text="Reserved: 0" />
+            <Label fx:id="availableLabel" text="Available: 0" />
+
+            <TextField fx:id="amountField" promptText="Amount" />
+
+            <Button text="Deposit" onAction="#onDeposit" />
+            <Button text="Withdraw" onAction="#onWithdraw" />
+        </VBox>
+    </right>
+
+</BorderPane>
