@@ -1,11 +1,15 @@
 package com.ltnc.auction.server.network;
 
 import com.google.gson.Gson;
+import com.ltnc.auction.server.model.Auction;
 import com.ltnc.auction.server.model.Item;
 import com.ltnc.auction.server.model.User;
 import com.ltnc.auction.server.model.UserRole;
+import com.ltnc.auction.server.model.Wallet;
 import com.ltnc.auction.server.services.AuthService;
 import com.ltnc.auction.server.services.ItemService;
+import com.ltnc.auction.server.services.AuctionService;
+import com.ltnc.auction.server.services.WalletService;
 import com.ltnc.auction.shared.protocol.ClientToServerMessage;
 import com.ltnc.auction.shared.protocol.MessageType;
 import com.ltnc.auction.shared.protocol.ServerToClientMessage;
@@ -22,12 +26,22 @@ public class ClientHandler implements Runnable {
     private final Socket socket;
     private final AuthService authService;
     private final ItemService itemService;
+    private final AuctionService auctionService;
+    private final WalletService walletService;
     private final Gson gson = new Gson();
 
-    public ClientHandler(Socket socket, AuthService authService, ItemService itemService) {
+    public ClientHandler(
+            Socket socket,
+            AuthService authService,
+            ItemService itemService,
+            AuctionService auctionService,
+            WalletService walletService
+    ) {
         this.socket = socket;
         this.authService = authService;
         this.itemService = itemService;
+        this.auctionService = auctionService;
+        this.walletService = walletService;
     }
 
     @Override
@@ -70,6 +84,12 @@ public class ClientHandler implements Runnable {
             case UPDATE_ITEM -> response = handleUpdateItem(request);
             case DELETE_ITEM -> response = handleDeleteItem(request);
             case GET_ITEMS_BY_SELLER -> response = handleGetItemsBySeller(request);
+
+            case PLACE_BID -> response = handlePlaceBid(request);
+            case GET_AUCTIONS -> response = handleGetAuctions(request);
+            case GET_WALLET -> response = handleGetWallet(request);
+            case DEPOSIT -> response = handleDeposit(request);
+            case WITHDRAW -> response = handleWithdraw(request);
             default -> {
                 response.type = MessageType.ERROR;
                 response.success = false;
@@ -183,6 +203,86 @@ public class ClientHandler implements Runnable {
         return response;
     }
 
+    private ServerToClientMessage handleGetAuctions(ClientToServerMessage request) {
+        List<Auction> auctions = auctionService.getAllAuctions();
+        ServerToClientMessage response = new ServerToClientMessage();
+        response.type = MessageType.AUCTION_LIST;
+        response.success = true;
+        response.code = "OK";
+        response.auctions = auctions.stream().map(this::auctionToMap).toList();
+        return response;
+    }
+
+    private ServerToClientMessage handlePlaceBid(ClientToServerMessage request) {
+        ServerToClientMessage response = new ServerToClientMessage();
+
+        User actor = actorFromRequest(request);
+
+        var result = auctionService.placeBid(
+                request.auctionId,
+                actor.getEmail(),
+                request.bidAmount
+        );
+
+        response.type = MessageType.BID_RESULT;
+        response.success = result.success();
+        response.code = result.code();
+        if (!result.success()) {
+            response.error = result.code();
+            response.requiredTopUp = result.requiredTopUp();
+        }
+
+        return response;
+    }
+
+    private ServerToClientMessage handleGetWallet(ClientToServerMessage request) {
+        ServerToClientMessage response = new ServerToClientMessage();
+
+        User actor = actorFromRequest(request);
+
+        Wallet wallet = walletService.getWallet(actor.getId());
+
+        response.type = MessageType.WALLET_RESULT;
+        response.success = true;
+        response.code = "OK";
+
+        response.balance = wallet.getBalance().doubleValue();
+        response.reserved = wallet.getReserved().doubleValue();
+        response.available = wallet.getAvailable().doubleValue();
+
+        return response;
+    }
+
+    private ServerToClientMessage handleDeposit(ClientToServerMessage request) {
+        ServerToClientMessage response = new ServerToClientMessage();
+
+        User actor = actorFromRequest(request);
+
+        boolean success = walletService.deposit(actor.getId(), request.amount == null ? 0 : request.amount);
+
+        response.type = MessageType.DEPOSIT_RESULT;
+        response.success = success;
+        response.code = success ? "OK" : "FAILED";
+        response.message = success ? "Succeed Deposit" : "Failed Deposit";
+
+        return response;
+    }
+
+    private ServerToClientMessage handleWithdraw(ClientToServerMessage request) {
+        ServerToClientMessage response = new ServerToClientMessage();
+
+        User actor = actorFromRequest(request);
+
+        boolean success = walletService.withdraw(actor.getId(), request.amount == null ? 0 : request.amount);
+
+        response.type = MessageType.WITHDRAW_RESULT;
+        response.success = success;
+        response.code = success ? "OK" : "FAILED";
+        response.message = success ? "Succeed Withdraw" : "Failed Withdraw";
+
+        return response;
+    }
+
     private User actorFromRequest(ClientToServerMessage request) {
         User user = new User();
         user.setId(request.userId == null ? request.sellerId : request.userId);
@@ -218,6 +318,19 @@ public class ClientHandler implements Runnable {
         map.put("description", item.getDescription());
         map.put("startingBid", item.getStartingBid());
         map.put("imageUrl", item.getImageUrl());
+        return map;
+    }
+
+    private Map<String, Object> auctionToMap(Auction auction) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", auction.getId());
+        map.put("itemId", auction.getItemId());
+        map.put("title", auction.getTitle());
+        map.put("description", auction.getDescription());
+        map.put("startingBid", auction.getStartingBid() == null ? 0.0 : auction.getStartingBid().doubleValue());
+        map.put("currentBid", auction.getCurrentBid() == null ? 0.0 : auction.getCurrentBid().doubleValue());
+        map.put("status", auction.getStatus());
+        map.put("highestBidderId", auction.getHighestBidderId());
         return map;
     }
 }

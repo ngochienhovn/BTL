@@ -10,6 +10,9 @@ public class ClientToServerMessage {
     public String fullName;
     public String password;
     public String role;
+    public Long auctionId;     // id phiên đấu giá
+    public Double bidAmount;   // số tiền đặt giá
+    public Double amount;      // số tiền nạp / rút
     // Fields for CREATE_ITEM message
     public Long userId;
     public Long itemId;
@@ -21,3 +24,6 @@ public class ClientToServerMessage {
     public BigDecimal itemStartingBid;
     public String imageUrl;
 }
+
+{"MessageType":"LOGIN","email":"user@example.com","password":"password","fullName":"John Doe","role":"USER"}
+{"MessageType":"CREATE_ITEM","userId":1,"itemId":null,"sellerId":1,"sellerEmail":"
