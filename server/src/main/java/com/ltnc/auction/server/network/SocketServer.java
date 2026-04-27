@@ -17,6 +17,7 @@ public class SocketServer {
     private final AuctionService auctionService;
     private final WalletService walletService;
     private final ExecutorService executor = Executors.newFixedThreadPool(16);
+    private final AuctionBroadcaster broadcaster = new AuctionBroadcaster(); // sprint 4
 
     public SocketServer(
             int port,
@@ -37,7 +38,7 @@ public class SocketServer {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket socket = serverSocket.accept();
-                executor.submit(new ClientHandler(socket, authService, itemService, auctionService, walletService));
+                executor.submit(new ClientHandler(socket, authService, itemService, auctionService, walletService, broadcaster));
             }
         } catch (IOException e) {
             throw new RuntimeException("Server failed to start", e);

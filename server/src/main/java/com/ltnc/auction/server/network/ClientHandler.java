@@ -29,23 +29,28 @@ public class ClientHandler implements Runnable {
     private final AuctionService auctionService;
     private final WalletService walletService;
     private final Gson gson = new Gson();
+    private final AuctionBroadcaster broadcaster;
+    private PrintWriter out; // sprint 4
 
     public ClientHandler(
             Socket socket,
             AuthService authService,
             ItemService itemService,
             AuctionService auctionService,
-            WalletService walletService
+            WalletService walletService,
+            AuctionBroadcaster broadcaster // sprint 4
     ) {
         this.socket = socket;
         this.authService = authService;
         this.itemService = itemService;
         this.auctionService = auctionService;
         this.walletService = walletService;
+        this.broadcaster = broadcaster; // sprint 4
     }
 
     @Override
     public void run() {
+        broadcaster.register(this);  // sprint 4 client vừa connect -> thêm vào dsach
         try (
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)
@@ -60,11 +65,21 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("[server] Error handling client: " + e.getMessage());
         } finally {
+            broadcaster.unregister(this); // sprint 4 client thoát -> xóa khỏi dsach
             try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void sendBroadcast(ServerToClientMessage message) { // sprint 4 cách server gửi message tới từng client
+        try {
+            String json = gson.toJson(message);
+            out.println(json);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -230,6 +245,19 @@ public class ClientHandler implements Runnable {
         if (!result.success()) {
             response.error = result.code();
             response.requiredTopUp = result.requiredTopUp();
+        } else {
+        //  Sprint 4: broadcast cho tất cả client
+            ServerToClientMessage broadcastMsg = new ServerToClientMessage();
+            broadcastMsg.type = MessageType.AUCTION_UPDATE;
+
+        // gửi thông tin auction mới (tuỳ bạn có gì trong result)
+            broadcastMsg.auction = java.util.Map.of(
+                "auctionId", request.auctionId,
+                "currentBid", request.bidAmount,
+                "bidder", actor.getEmail()
+            );
+
+            broadcaster.broadcast(broadcastMsg);
         }
 
         return response;
