@@ -19,10 +19,12 @@ import com.ltnc.auction.server.model.Wallet;
 import com.ltnc.auction.server.network.AuctionBroadcaster;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -107,7 +109,33 @@ class AuctionServiceBroadcastTest {
 
         assertTrue(result.success());
 
-        verify(broadcaster, atLeastOnce()).broadcast(any());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
+
+        List<String> payloads = captor.getAllValues();
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains("AUCTION_UPDATE")),
+                "Broadcast phải có message AUCTION_UPDATE"
+        );
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains(String.valueOf(auctionId))),
+                "Broadcast phải chứa auctionId"
+        );
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains("200")),
+                "Broadcast phải chứa currentBid mới là 200"
+        );
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains(user.getEmail())
+                        || payload.contains(user.getFullName())
+                        || payload.contains(String.valueOf(user.getId()))),
+                "Broadcast nên chứa thông tin bidder"
+        );
     }
 
     @Test
@@ -130,7 +158,27 @@ class AuctionServiceBroadcastTest {
 
         assertTrue(result.success());
 
-        verify(broadcaster, atLeastOnce()).broadcast(any());
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
+
+        List<String> payloads = captor.getAllValues();
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains("WALLET_UPDATE")
+                        || payload.contains("wallet")
+                        || payload.contains("Wallet")),
+                "Broadcast phải có message cập nhật ví"
+        );
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains(String.valueOf(user.getId()))
+                        || payload.contains(user.getEmail())),
+                "Broadcast ví phải chứa thông tin user"
+        );
+
+        verify(walletDAO, atLeastOnce()).updateBalances(eq(4L), any(), any());
+        verify(walletTransactionDAO, atLeastOnce()).insert(any());
     }
 
     private Auction buildRunningAuction(Long id, double currentBid, Long highestBidderId) {

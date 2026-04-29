@@ -1,10 +1,13 @@
 package com.ltnc.auction.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ltnc.auction.server.dao.AuctionDAO;
@@ -15,10 +18,12 @@ import com.ltnc.auction.server.dao.WalletTransactionDAO;
 import com.ltnc.auction.server.model.Auction;
 import com.ltnc.auction.server.model.User;
 import com.ltnc.auction.server.model.Wallet;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
 import com.ltnc.auction.server.services.AuctionService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -52,6 +58,9 @@ class ConcurrencyLoadTest {
     @Mock
     private WalletTransactionDAO walletTransactionDAO;
 
+    @Mock
+    private AuctionBroadcaster broadcaster;
+
     private AuctionService auctionService;
 
     @BeforeEach
@@ -63,6 +72,8 @@ class ConcurrencyLoadTest {
                 walletDAO,
                 walletTransactionDAO
         );
+
+        auctionService.setBroadcaster(broadcaster);
     }
 
     @Test
@@ -71,6 +82,7 @@ class ConcurrencyLoadTest {
 
         Auction sharedAuction = buildRunningAuction(auctionId, 100.0, null);
         AtomicReference<BigDecimal> maxBid = new AtomicReference<>(BigDecimal.valueOf(100.0));
+        AtomicReference<Exception> threadError = new AtomicReference<>();
 
         Map<Long, Wallet> wallets = new ConcurrentHashMap<>();
 
@@ -128,7 +140,7 @@ class ConcurrencyLoadTest {
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch doneLatch = new CountDownLatch(threadCount);
 
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
 
         for (int i = 1; i <= threadCount; i++) {
             final int userNumber = i;
@@ -140,7 +152,7 @@ class ConcurrencyLoadTest {
                     startLatch.await();
                     auctionService.placeBid(auctionId, email, bidAmount);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    threadError.compareAndSet(null, e);
                 } finally {
                     doneLatch.countDown();
                 }
@@ -153,10 +165,11 @@ class ConcurrencyLoadTest {
 
         pool.shutdownNow();
 
-        long duration = System.currentTimeMillis() - startTime;
+        long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 
         assertTrue(completed, "Test bị timeout, có thể đang bị deadlock");
-        assertTrue(duration < 15000, "Test phải hoàn thành dưới 15 giây");
+        assertTrue(durationMs < 15000, "Test phải hoàn thành dưới 15 giây");
+        assertNull(threadError.get(), "Không được có exception trong thread");
 
         assertEquals(150.0, maxBid.get().doubleValue(), 0.0001);
         assertEquals(150.0, sharedAuction.getCurrentBid().doubleValue(), 0.0001);
@@ -167,6 +180,23 @@ class ConcurrencyLoadTest {
                     "Reserved money không được âm"
             );
         }
+
+        verify(broadcaster, atLeastOnce()).broadcast(any());
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
+
+        List<String> payloads = captor.getAllValues();
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains("AUCTION_UPDATE")),
+                "Phải có ít nhất một broadcast AUCTION_UPDATE"
+        );
+
+        assertTrue(
+                payloads.stream().anyMatch(payload -> payload.contains("150")),
+                "Broadcast phải chứa giá cao nhất cuối cùng là 150"
+        );
     }
 
     private Auction buildRunningAuction(Long id, double currentBid, Long highestBidderId) {

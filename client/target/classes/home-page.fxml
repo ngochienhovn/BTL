@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+
+<BorderPane fx:id="rootPane" stylesheets="@/resources/css/home-page.css" xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.HomePageController">
+    <top>
+        <VBox alignment="TOP_CENTER" styleClass="top-bar">
+            <VBox fx:id="headerContainerVBox" spacing="16.0" maxWidth="1440.0">
+                <padding>
+                    <Insets top="18.0" right="24.0" bottom="18.0" left="24.0" />
+                </padding>
+
+                <HBox fx:id="headerTopHBox" spacing="12.0" alignment="CENTER_LEFT">
+                    <HBox spacing="4.0" alignment="CENTER_LEFT">
+                        <Label styleClass="brand-title" text="%nav.brand" />
+                    </HBox>
+                    <HBox fx:id="searchWrapBox" spacing="12.0" styleClass="search-wrap" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="searchField" promptText="%home.search.prompt"
+                            HBox.hgrow="ALWAYS" />
+                    </HBox>
+                    <HBox fx:id="navButtonsBox" spacing="8.0" alignment="CENTER_RIGHT">
+                        <HBox fx:id="watchlistNavBox" alignment="CENTER_LEFT" spacing="6.0">
+                            <Button styleClass="nav-ghost" text="%nav.watchlist" onAction="#onOpenWatchlist" />
+                            <Label fx:id="watchlistBadgeLabel" styleClass="watchlist-badge" text="0"
+                                visible="false" managed="false" />
+                        </HBox>
+
+                        <Button fx:id="sellerItemsButton" styleClass="nav-ghost" text="%nav.sellerItems"
+                            onAction="#onOpenSellerItems" visible="false" managed="false" />
+                        <Button fx:id="adminDashboardButton" styleClass="nav-ghost" text="%nav.admin"
+                            onAction="#onOpenAdminDashboard" visible="false" managed="false" />
+                        <Button fx:id="profileButton" styleClass="nav-ghost" text="%nav.profile"
+                            onAction="#onOpenProfile" visible="false" managed="false" />
+                        <Button fx:id="logoutButton" styleClass="nav-ghost" text="%nav.logout"
+                            onAction="#onLogout" visible="false" managed="false" />
+                        <Button fx:id="signInButton" styleClass="nav-ghost" text="%nav.signIn"
+                            onAction="#onOpenSignIn" />
+                        <Button fx:id="listItemButton" styleClass="primary-button" text="%nav.listItem"
+                            onAction="#onToggleCategories" />
+                    </HBox>
+                </HBox>
+            <FlowPane fx:id="categoryBar" hgap="8.0" vgap="8.0" />
+            </VBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox alignment="TOP_CENTER" style="-fx-background-color: transparent;">
+                    <VBox spacing="16.0" styleClass="content-wrap" maxWidth="1440.0">
+                        <padding>
+                            <Insets top="24.0" right="24.0" bottom="24.0" left="24.0" />
+                        </padding>
+                    <Label fx:id="pageTitleLabel" styleClass="page-title" text="Discover Unique Treasures" />
+                    <Label fx:id="pageSubtitleLabel" styleClass="page-subtitle"
+                        text="Browse live auctions and place your bid on premium collectibles."
+                        wrapText="true" />
+                    <VBox fx:id="roleDashboardBox" spacing="8.0" styleClass="role-dashboard" visible="false" managed="false">
+                        <Label fx:id="roleDashboardTitle" styleClass="role-dashboard-title" text="" />
+                        <Label fx:id="roleDashboardSubtitle" styleClass="role-dashboard-subtitle" text="" wrapText="true" />
+                        <Label fx:id="sellerDashboardItemsLabel" styleClass="role-dashboard-subtitle" text="" wrapText="true" visible="false" managed="false" />
+                        <HBox spacing="10.0">
+                            <Button fx:id="roleDashboardActionButton" styleClass="primary-button" text="" onAction="#onRoleDashboardAction" visible="false" managed="false" />
+                        </HBox>
+                    </VBox>
+                    <Label fx:id="sectionTitleLabel" styleClass="section-title"
+                        text="Featured Auctions" />
+                    <Label fx:id="resultLabel" styleClass="result-label" text="0 auctions found" />
+                    <FlowPane fx:id="auctionGrid" hgap="16.0" vgap="16.0" />
+                    <Label fx:id="emptyStateLabel" styleClass="result-label"
+                        text="No auctions found matching your criteria." visible="false"
+                        managed="false" />
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <VBox alignment="TOP_CENTER" styleClass="footer">
+            <VBox spacing="0.0" maxWidth="1440.0" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets top="20.0" right="24.0" bottom="12.0" left="24.0" />
+                </padding>
+            <FlowPane hgap="60.0" vgap="24.0" alignment="CENTER_LEFT">
+                <VBox spacing="12.0" prefWidth="320">
+                    <Label styleClass="brand-title" text="BidMaster" />
+                    <Label styleClass="footer-item" text="The world's premier platform for discovering unique treasures and vintage collectibles. Join our community of passionate collectors today." wrapText="true" />
+                </VBox>
+                <Region prefWidth="10.0" prefHeight="0.0" /> <!-- spacer -->
+                <HBox spacing="60.0" alignment="CENTER_LEFT">
+                    <VBox spacing="8.0">
+                        <Label styleClass="footer-title" text="Categories" />
+                        <Label styleClass="footer-link" text="Watches" />
+                        <Label styleClass="footer-link" text="Electronics" />
+                        <Label styleClass="footer-link" text="Art &amp; Photography" />
+                        <Label styleClass="footer-link" text="Jewelry" />
+                    </VBox>
+                    <VBox spacing="8.0">
+                        <Label styleClass="footer-title" text="Support" />
+                        <Label styleClass="footer-link" text="Help Center" />
+                        <Label styleClass="footer-link" text="Buyer Protection" />
+                        <Label styleClass="footer-link" text="Contact Us" />
+                        <Label styleClass="footer-link" text="FAQ" />
+                    </VBox>
+                    <VBox spacing="8.0">
+                        <Label styleClass="footer-title" text="Legal" />
+                        <Label styleClass="footer-link" text="Terms of Service" />
+                        <Label styleClass="footer-link" text="Privacy Policy" />
+                        <Label styleClass="footer-link" text="Cookie Policy" />
+                    </VBox>
+                </HBox>
+            </FlowPane>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="footer-bottom">
+                <Label text="BidMaster - JavaFX Edition" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="© 2026 BidMaster" />
+            </HBox>
+            </VBox>
+        </VBox>
+    </bottom>
+</BorderPane>
