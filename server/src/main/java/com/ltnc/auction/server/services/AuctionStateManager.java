@@ -5,10 +5,11 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import com.ltnc.auction.server.dao.AuctionDAO;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
 
 public class AuctionStateManager {
     
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
   private final Map<Long, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
   private final AuctionDAO auctionDAO;
   private final AuctionBroadcaster broadcaster;

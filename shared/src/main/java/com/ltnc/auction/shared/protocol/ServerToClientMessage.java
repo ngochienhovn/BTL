@@ -1,19 +1,20 @@
 package com.ltnc.auction.shared.protocol;
 
-import com.ltnc.auction.shared.AuctionState;
-import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Format message kiểu "line-delimited JSON" (mỗi JSON 1 dòng).
- */
 public class ServerToClientMessage {
-  public MessageType type;
-  public String error;
-
-  // realtime fields (sẽ dùng dần ở các sprint sau)
-  public Long auctionId;
-  public AuctionState auctionState;
-  public BigDecimal currentPrice;
-  public Long highestBidderId;
+    public MessageType type;
+    public boolean success;
+    public String code;
+    public String error;
+    public String message;
+    public Map<String, Object> data;
+    public List<Map<String, Object>> items;
+    public List<Map<String, Object>> auctions; // danh sách phiên đấu giá
+    public Map<String, Object> auction; // thông tin 1 phiên cụ thể
+    public Double balance;   // tổng tiền
+    public Double reserved;  // tiền đang giữ lại khi bid
+    public Double available; // tiền còn dùng được
+    public Double requiredTopUp; // thiếu bao nhiêu tiền nếu bid fail
 }
-

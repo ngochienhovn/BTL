@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import com.ltnc.auction.shared.protocol.ServerToClientMessage;
 
+import com.ltnc.auction.server.model.Auction;
+import com.ltnc.auction.server.model.Wallet;
+
 public class AuctionBroadcaster {
   private final List<ClientHandler> listeners = new CopyOnWriteArrayList<>();
 

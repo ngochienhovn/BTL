@@ -10,8 +10,6 @@ import com.ltnc.auction.server.model.BidTransaction;
 import com.ltnc.auction.server.model.User;
 import com.ltnc.auction.server.model.Wallet;
 import com.ltnc.auction.server.model.WalletTransaction;
-import com.ltnc.auction.server.network.AuctionBroadcaster;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +21,6 @@ public class AuctionService {
     private final UserDAO userDAO;
     private final WalletDAO walletDAO;
     private final WalletTransactionDAO walletTransactionDAO;
-    private final AuctionBroadcaster broadcaster;
 
     public AuctionService(
             AuctionDAO auctionDAO,
@@ -31,14 +28,12 @@ public class AuctionService {
             UserDAO userDAO,
             WalletDAO walletDAO,
             WalletTransactionDAO walletTransactionDAO
-            AuctionBroadcaster broadcaster
     ) {
         this.auctionDAO = auctionDAO;
         this.bidDAO = bidDAO;
         this.userDAO = userDAO;
         this.walletDAO = walletDAO;
         this.walletTransactionDAO = walletTransactionDAO;
-        this.broadcaster = broadcaster;
     }
 
     public record BidResult(boolean success, String code, Auction auction, double currentBid, Double requiredTopUp) {}
@@ -107,21 +102,7 @@ public class AuctionService {
                     bidAmount,
                     LocalDateTime.now()
             );
-            
             bidDAO.insert(tx);
-            
-            // NEW: broadcast updates
-            Auction updatedAuction = auctionDAO.findById(auctionId);
-            broadcaster.broadcastAuctionUpdate(auctionId, updatedAuction);
-
-            Wallet updatedBidderWallet = walletDAO.findOrCreateByUserId(bidder.getId());
-            broadcaster.broadcastWalletUpdate(bidder.getId(), updatedBidderWallet);
-
-            if (oldLeaderId != null && !oldLeaderId.equals(bidder.getId())) {
-                Wallet updatedOldLeaderWallet = walletDAO.findOrCreateByUserId(oldLeaderId);
-                broadcaster.broadcastWalletUpdate(oldLeaderId, updatedOldLeaderWallet);
-            }
-
             return new BidResult(true, "OK", auction, toDouble(bidAmount), null);
         } finally {
             auction.getBidLock().unlock();

@@ -3,9 +3,8 @@ package com.ltnc.auction.server.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Wallet extends Entity {
-
-    private String userId;
+public class Wallet {
+    private Long userId;
     private BigDecimal balance;
     private BigDecimal reserved;
     private LocalDateTime updatedAt;
@@ -16,18 +15,18 @@ public class Wallet extends Entity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Wallet(String userId, BigDecimal balance, BigDecimal reserved, LocalDateTime updatedAt) {
+    public Wallet(Long userId, BigDecimal balance, BigDecimal reserved, LocalDateTime updatedAt) {
         this.userId = userId;
         this.balance = balance != null ? balance : BigDecimal.ZERO;
         this.reserved = reserved != null ? reserved : BigDecimal.ZERO;
         this.updatedAt = updatedAt;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

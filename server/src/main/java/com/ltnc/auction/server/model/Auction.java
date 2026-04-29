@@ -1,39 +1,38 @@
 package com.ltnc.auction.server.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.utik.concurrent.locks.Reentrantlock;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class Auction extends Entity {
-    private String id;
-    private String itemId;
+public class Auction {
+    private Long id;
+    private Long itemId;
     private String title;
     private String description;
-    private double startingBid;
-    private double currentBid;
+    private BigDecimal startingBid;
+    private BigDecimal currentBid;
     private String status;
-    private String highestBidderId;
+    private Long highestBidderId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private List<BidTransaction> bidTransactions = new ArrayList<>();
     private final ReentrantLock bidLock = new ReentrantLock();
 
-    public Auction() {}
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String Id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
@@ -41,7 +40,7 @@ public class Auction extends Entity {
         return title;
     }
 
-    public void setTile(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -53,19 +52,19 @@ public class Auction extends Entity {
         this.description = description;
     }
 
-    public double getStartingBid() {
+    public BigDecimal getStartingBid() {
         return startingBid;
     }
 
-    public void setStartingBid(double startingBid) {
+    public void setStartingBid(BigDecimal startingBid) {
         this.startingBid = startingBid;
     }
 
-    public double getCurrentBid() {
-        reuturn currentBid;
+    public BigDecimal getCurrentBid() {
+        return currentBid;
     }
 
-    public void setCurrentBid(double currentBid) {
+    public void setCurrentBid(BigDecimal currentBid) {
         this.currentBid = currentBid;
     }
 
@@ -77,12 +76,20 @@ public class Auction extends Entity {
         this.status = status;
     }
 
-    public String getHighestBidderId() {
+    public Long getHighestBidderId() {
         return highestBidderId;
     }
 
-    public void setHighestBidderId(String highestBidderId) {
+    public void setHighestBidderId(Long highestBidderId) {
         this.highestBidderId = highestBidderId;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public LocalDateTime getEndTime() {

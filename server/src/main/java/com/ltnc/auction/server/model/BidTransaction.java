@@ -3,8 +3,8 @@ package com.ltnc.auction.server.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class BidTransaction extends Entity {
-
+public class BidTransaction {
+    private Long id;
     private Long auctionId;
     private Long bidderId;
     private String bidderEmail;
@@ -12,11 +12,14 @@ public class BidTransaction extends Entity {
     private BigDecimal amount;
     private LocalDateTime createdAt;
 
-    public BidTransaction() {
+    public BidTransaction() {}
+
+    public BidTransaction(Long auctionId, Long bidderId, String bidderEmail, String bidderName, BigDecimal amount) {
+        this(auctionId, bidderId, bidderEmail, bidderName, amount, LocalDateTime.now());
     }
 
-    public BidTransaction (Long auctionId, Long bidderId, String bidderEmail, String bidderName, BigDecimal amount, LocalDateTime createdAt) {
-        this.autionId = auctionId;
+    public BidTransaction(Long auctionId, Long bidderId, String bidderEmail, String bidderName, BigDecimal amount, LocalDateTime createdAt) {
+        this.auctionId = auctionId;
         this.bidderId = bidderId;
         this.bidderEmail = bidderEmail;
         this.bidderName = bidderName;
@@ -24,19 +27,27 @@ public class BidTransaction extends Entity {
         this.createdAt = createdAt;
     }
 
-    public String getAuctionId() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getAuctionId() {
         return auctionId;
     }
 
-    public void setAuctionId(String auctionId) {
+    public void setAuctionId(Long auctionId) {
         this.auctionId = auctionId;
     }
 
-    public String getBidderId() {
+    public Long getBidderId() {
         return bidderId;
     }
 
-    public void setBidderId(String bidderId) {
+    public void setBidderId(Long bidderId) {
         this.bidderId = bidderId;
     }
 
@@ -71,5 +82,4 @@ public class BidTransaction extends Entity {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    
 }

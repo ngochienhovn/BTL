@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>com.ltnc.auction</groupId>
-    <artifactId>auction-system</artifactId>
+    <artifactId>BTL</artifactId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -14,4 +14,5 @@
   <packaging>jar</packaging>
 
   <name>shared</name>
+
 </project>

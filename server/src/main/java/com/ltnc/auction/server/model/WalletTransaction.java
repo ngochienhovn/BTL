@@ -3,20 +3,22 @@ package com.ltnc.auction.server.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class WalletTransaction extend Entity {
-
-    private String userId;
+public class WalletTransaction {
+    private Long id;
+    private Long userId;
     private String type; 
     private BigDecimal amount;
     private Long refAuctionId;
     private LocalDateTime createdAt;
 
-    public WalletTransaction() {
+    public WalletTransaction() 
+    {
         this.amount = BigDecimal.ZERO;
         this.createdAt = LocalDateTime.now();
     }
 
-    public WalletTransaction(String userId, String type, BigDecimal amount, Long refAuctionId, LocalDateTime createdAt) {
+    public WalletTransaction(Long userId, String type, BigDecimal amount, Long refAuctionId, LocalDateTime createdAt)
+    {
         this.userId = userId;
         this.type = type;
         this.amount = amount != null ? amount : BigDecimal.ZERO;
@@ -24,11 +26,22 @@ public class WalletTransaction extend Entity {
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
     }
 
-    public String getUserId() {
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public Long getUserId() 
+    {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

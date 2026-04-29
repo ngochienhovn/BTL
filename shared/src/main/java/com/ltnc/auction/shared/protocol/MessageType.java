@@ -1,14 +1,6 @@
 package com.ltnc.auction.shared.protocol;
 
 public enum MessageType {
-<<<<<<< Updated upstream
-  PING,
-  PONG,
-  BID,
-  BID_RESULT,
-  AUCTION_STATE_UPDATE,
-  ERROR
-=======
     // C -> S
     PING, LOGIN, REGISTER, CREATE_ITEM, UPDATE_ITEM, DELETE_ITEM, GET_ITEMS_BY_SELLER,GET_AUCTIONS, PLACE_BID, GET_WALLET, DEPOSIT, WITHDRAW, 
     
@@ -17,10 +9,4 @@ public enum MessageType {
 
     // S -> C error
     ERROR;
-
-    AUCTION_UPDATE,
-    WALLET_UPDATE,
-    AUCTION_STATE_CHANGE,
->>>>>>> Stashed changes
 }
-
