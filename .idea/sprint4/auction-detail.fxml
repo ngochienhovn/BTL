@@ -1,0 +1,47 @@
+<VBox spacing="12" style="-fx-padding: 15;"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="client.app.controller.AuctionDetailController">
+
+    <!-- Auction Title -->
+    <Label fx:id="auctionTitleLabel" text="Auction Title" />
+
+    <!-- Current Bid -->
+    <HBox spacing="8">
+        <Label text="Current Bid:" />
+        <Label fx:id="currentBidLabel" text="0" />
+    </HBox>
+
+    <!-- Countdown Timer -->
+    <HBox spacing="8">
+        <Label text="Ends in:" />
+        <Label fx:id="endTimeLabel" text="LOADING..." />
+    </HBox>
+
+    <!-- Wallet Status -->
+    <VBox fx:id="walletStatusBox" spacing="5">
+        <Label text="Balance:" />
+        <Label fx:id="walletBalanceLabel" text="0" />
+
+        <Label text="Reserved:" />
+        <Label fx:id="walletReservedLabel" text="0" />
+
+        <Label text="Available:" />
+        <Label fx:id="walletAvailableLabel" text="0" />
+    </VBox>
+
+    <!-- Bid Input -->
+    <HBox spacing="8">
+        <TextField fx:id="bidAmountTextField" promptText="Enter bid..." />
+        <Button fx:id="placeBidButton" text="Place Bid" />
+    </HBox>
+
+    <!-- Bid History Table -->
+    <TableView fx:id="bidHistoryTable" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="bidderColumn" text="Bidder" prefWidth="120" />
+            <TableColumn fx:id="amountColumn" text="Amount" prefWidth="120" />
+            <TableColumn fx:id="timeColumn" text="Time" prefWidth="180" />
+        </columns>
+    </TableView>
+
+</VBox>
