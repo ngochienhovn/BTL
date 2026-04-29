@@ -24,3 +24,9 @@ public class ClientToServerMessage {
     public BigDecimal itemStartingBid;
     public String imageUrl;
 }
+<<<<<<< HEAD
+
+// {"MessageType":"LOGIN","email":"user@example.com","password":"password","fullName":"John Doe","role":"USER"}
+// {"MessageType":"CREATE_ITEM","userId":1,"itemId":null,"sellerId":1,"sellerEmail":"
+=======
+>>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
