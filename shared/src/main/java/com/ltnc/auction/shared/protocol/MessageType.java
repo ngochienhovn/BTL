@@ -9,6 +9,4 @@ public enum MessageType {
 
     // S -> C error
     ERROR;
-
-    AUCTION_UPDATE, WALLET_UPDATE, AUCTION_STATE_CHANGE;
 }

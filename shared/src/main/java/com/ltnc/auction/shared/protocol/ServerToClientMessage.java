@@ -17,17 +17,4 @@ public class ServerToClientMessage {
     public Double reserved;  // tiền đang giữ lại khi bid
     public Double available; // tiền còn dùng được
     public Double requiredTopUp; // thiếu bao nhiêu tiền nếu bid fail
-
-    public String evenType;
-    public Long auctionId;
-    public Double currentBid;
-    public Long highestBidderId;
-    public String auctionState;
-
-    public Long userId;
-    public Double balance;
-    public Double reserved;
-    public Double available;
-
-    public Long severCurrentTimeMs;
 }
