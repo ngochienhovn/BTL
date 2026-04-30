@@ -15,12 +15,12 @@ public class AuctionBroadcasterTest {
         AuctionBroadcaster broadcaster = new AuctionBroadcaster();
 
         for (int i = 0; i < 100; i++) {
-            broadcaster.broadcast("client-" + i);
+            broadcaster.broadcast("AUCTION_UPDATE client-" + i);
         }
 
         assertEquals(100, broadcaster.getMessages().size());
-        assertTrue(broadcaster.getMessages().contains("client-0"));
-        assertTrue(broadcaster.getMessages().contains("client-99"));
+        assertTrue(broadcaster.getMessages().contains("AUCTION_UPDATE client-0"));
+        assertTrue(broadcaster.getMessages().contains("AUCTION_UPDATE client-99"));
     }
 
     @Test
@@ -35,6 +35,7 @@ public class AuctionBroadcasterTest {
         broadcaster.clear();
 
         assertEquals(0, broadcaster.getMessages().size());
+        assertTrue(broadcaster.getMessages().isEmpty());
     }
 
     @Test
@@ -47,16 +48,22 @@ public class AuctionBroadcasterTest {
             messages.add("AUCTION_UPDATE client-" + i);
         }
 
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
 
         for (String message : messages) {
             broadcaster.broadcast(message);
         }
 
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
+        long endTime = System.nanoTime();
+        long durationMs = (endTime - startTime) / 1_000_000;
 
-        assertTrue(duration < 100, "Broadcast 100 messages phải dưới 100ms, thực tế: " + duration + "ms");
+        assertTrue(
+                durationMs < 100,
+                "Broadcast 100 messages phải dưới 100ms, thực tế: " + durationMs + "ms"
+        );
+
         assertEquals(100, broadcaster.getMessages().size());
+        assertTrue(broadcaster.getMessages().contains("AUCTION_UPDATE client-0"));
+        assertTrue(broadcaster.getMessages().contains("AUCTION_UPDATE client-99"));
     }
 }

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
 
 public class AuctionService {
     private final AuctionDAO auctionDAO;
@@ -21,6 +22,7 @@ public class AuctionService {
     private final UserDAO userDAO;
     private final WalletDAO walletDAO;
     private final WalletTransactionDAO walletTransactionDAO;
+    private AuctionBroadcaster broadcaster;
 
     public AuctionService(
             AuctionDAO auctionDAO,
@@ -35,6 +37,9 @@ public class AuctionService {
         this.walletDAO = walletDAO;
         this.walletTransactionDAO = walletTransactionDAO;
     }
+    public void setBroadcaster(AuctionBroadcaster broadcaster) {
+    this.broadcaster = broadcaster;
+}
 
     public record BidResult(boolean success, String code, Auction auction, double currentBid, Double requiredTopUp) {}
 

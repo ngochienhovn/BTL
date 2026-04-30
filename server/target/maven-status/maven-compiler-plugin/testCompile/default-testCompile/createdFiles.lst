@@ -1,0 +1,4 @@
+com\ltnc\auction\server\services\AuctionServiceTest.class
+com\ltnc\auction\server\ConcurrencyLoadTest.class
+com\ltnc\auction\server\network\AuctionBroadcasterTest.class
+com\ltnc\auction\server\services\AuctionServiceBroadcastTest.class

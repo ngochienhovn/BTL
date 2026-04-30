@@ -6,11 +6,7 @@
 
   <parent>
     <groupId>com.ltnc.auction</groupId>
-<<<<<<< HEAD
-    <artifactId>auction-system</artifactId>
-=======
     <artifactId>BTL</artifactId>
->>>>>>> origin/main
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -42,11 +38,6 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>${h2.version}</version>
-<<<<<<< HEAD
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
-=======
     </dependency>
 
     <dependency>
@@ -114,5 +105,4 @@
       </plugin>
     </plugins>
   </build>
->>>>>>> origin/main
 </project>
