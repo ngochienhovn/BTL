@@ -3,7 +3,8 @@ package com.ltnc.auction.shared.protocol;
 import java.util.List;
 import java.util.Map;
 
-public class ServerToClientMessage {
+public class ServerToClientMessage 
+{
     public MessageType type;
     public boolean success;
     public String code;
@@ -17,4 +18,12 @@ public class ServerToClientMessage {
     public Double reserved;  // tiền đang giữ lại khi bid
     public Double available; // tiền còn dùng được
     public Double requiredTopUp; // thiếu bao nhiêu tiền nếu bid fail
+
+    // Các field bổ sung cho các message type khác
+    public Long auctionId;
+    public Double currentBid;
+    public Long highestBidderId;
+    public String auctionStatus;
+    public Long userId;
+    public Long serverCurrentTimeMs;
 }

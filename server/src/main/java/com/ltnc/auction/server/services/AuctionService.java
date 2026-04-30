@@ -10,6 +10,8 @@ import com.ltnc.auction.server.model.BidTransaction;
 import com.ltnc.auction.server.model.User;
 import com.ltnc.auction.server.model.Wallet;
 import com.ltnc.auction.server.model.WalletTransaction;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,19 +23,22 @@ public class AuctionService {
     private final UserDAO userDAO;
     private final WalletDAO walletDAO;
     private final WalletTransactionDAO walletTransactionDAO;
+    private final AuctionBroadcaster broadcaster;
 
     public AuctionService(
             AuctionDAO auctionDAO,
             BidDAO bidDAO,
             UserDAO userDAO,
             WalletDAO walletDAO,
-            WalletTransactionDAO walletTransactionDAO
+            WalletTransactionDAO walletTransactionDAO,
+            AuctionBroadcaster broadcaster
     ) {
         this.auctionDAO = auctionDAO;
         this.bidDAO = bidDAO;
         this.userDAO = userDAO;
         this.walletDAO = walletDAO;
         this.walletTransactionDAO = walletTransactionDAO;
+        this.broadcaster = broadcaster;
     }
 
     public record BidResult(boolean success, String code, Auction auction, double currentBid, Double requiredTopUp) {}
@@ -90,9 +95,25 @@ public class AuctionService {
             walletDAO.updateBalances(bidder.getId(), safe(bidderWallet.getBalance()), safe(bidderWallet.getReserved()));
             walletTransactionDAO.insert(new WalletTransaction(bidder.getId(), "RESERVE", bidAmount, auctionId, LocalDateTime.now()));
 
+            // Bid successfully, update auction and bid
             auctionDAO.updateCurrentBid(auctionId, bidAmount, bidder.getId());
             auction.setCurrentBid(bidAmount);
             auction.setHighestBidderId(bidder.getId());
+
+            // Broadcast auction update
+            Auction updatedAuction = auctionDAO.findById(auctionId);
+            broadcaster.broadcastAuctionUpdate(auctionId, updatedAuction);
+
+            // Broadcast wallet update
+            Wallet updatedBidderWallet = walletDAO.findOrCreateByUserId(bidder.getId());
+            broadcaster.broadcastWalletUpdate(bidder.getId(), updatedBidderWallet);
+
+            // Broadcast wallet update for old leader if different from bidder
+            if (oldLeaderId != null && !oldLeaderId.equals(bidder.getId())) 
+            {
+                Wallet oldLeaderWallet = walletDAO.findOrCreateByUserId(oldLeaderId);
+                broadcaster.broadcastWalletUpdate(oldLeaderId, oldLeaderWallet);
+            }
 
             BidTransaction tx = new BidTransaction(
                     auctionId,
