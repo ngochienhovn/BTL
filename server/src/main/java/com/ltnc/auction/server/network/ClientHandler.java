@@ -1,7 +1,6 @@
 package com.ltnc.auction.server.network;
 
 import com.google.gson.Gson;
-<<<<<<< HEAD
 import com.ltnc.auction.server.model.Auction;
 import com.ltnc.auction.server.model.Item;
 import com.ltnc.auction.server.model.User;
@@ -11,15 +10,6 @@ import com.ltnc.auction.server.services.AuthService;
 import com.ltnc.auction.server.services.ItemService;
 import com.ltnc.auction.server.services.AuctionService;
 import com.ltnc.auction.server.services.WalletService;
-=======
-import com.ltnc.auction.server.model.Item;
-import com.ltnc.auction.server.model.User;
-import com.ltnc.auction.server.model.UserRole;
-import com.ltnc.auction.server.services.AuthService;
-import com.ltnc.auction.server.services.ItemService;
-import com.ltnc.auction.server.services.AuctionService; // Sprint 3
-import com.ltnc.auction.server.services.WalletService; // Sprint 3
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
 import com.ltnc.auction.shared.protocol.ClientToServerMessage;
 import com.ltnc.auction.shared.protocol.MessageType;
 import com.ltnc.auction.shared.protocol.ServerToClientMessage;
@@ -36,7 +26,6 @@ public class ClientHandler implements Runnable {
     private final Socket socket;
     private final AuthService authService;
     private final ItemService itemService;
-<<<<<<< HEAD
     private final AuctionService auctionService;
     private final WalletService walletService;
     private final Gson gson = new Gson();
@@ -51,34 +40,22 @@ public class ClientHandler implements Runnable {
             WalletService walletService,
             AuctionBroadcaster broadcaster // sprint 4
     ) {
-=======
-    private final AuctionService auctionService; // Sprint 3
-    private final WalletService walletService; // Sprint 3
-    private final Gson gson = new Gson();
-
-    public ClientHandler(Socket socket, AuthService authService, ItemService itemService, AuctionService auctionService, WalletService walletService) {
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
         this.socket = socket;
         this.authService = authService;
         this.itemService = itemService;
         this.auctionService = auctionService;
         this.walletService = walletService;
-<<<<<<< HEAD
         this.broadcaster = broadcaster; // sprint 4
-=======
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
     }
 
     @Override
     public void run() {
-<<<<<<< HEAD
-        broadcaster.register(this);  // sprint 4 client vừa connect -> thêm vào dsach
-=======
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
+        broadcaster.registerListener(this);  // sprint 4 client vừa connect -> thêm vào dsach
         try (
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)
         ) {
+            this.out = writer;
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println("[server] Received message from client: " + line);
@@ -89,30 +66,25 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("[server] Error handling client: " + e.getMessage());
         } finally {
-<<<<<<< HEAD
-            broadcaster.unregister(this); // sprint 4 client thoát -> xóa khỏi dsach
-=======
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            broadcaster.unregisterListener(this); // sprint 4 client thoát -> xóa khỏi dsach
         }
     }
 
-<<<<<<< HEAD
-    public void sendBroadcast(ServerToClientMessage message) { // sprint 4 cách server gửi message tới từng client
-        try {
-            String json = gson.toJson(message);
-            out.println(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendBroadcast(ServerToClientMessage message) 
+    {
+        PrintWriter writer = this.out;
+
+        if (writer == null) throw new IllegalStateException("Client input is not ready");
+
+        writer.println(gson.toJson(message));
+        writer.flush();
     }
 
-=======
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
+    public Long getAuthenticatedUserId() 
+    {
+        return authenticatedUserId;
+    }
+
     private ServerToClientMessage handleMessage(ClientToServerMessage request) {
         ServerToClientMessage response = new ServerToClientMessage();
         if (request == null || request.type == null) {
@@ -130,20 +102,11 @@ public class ClientHandler implements Runnable {
             case DELETE_ITEM -> response = handleDeleteItem(request);
             case GET_ITEMS_BY_SELLER -> response = handleGetItemsBySeller(request);
 
-<<<<<<< HEAD
             case PLACE_BID -> response = handlePlaceBid(request);
             case GET_AUCTIONS -> response = handleGetAuctions(request);
             case GET_WALLET -> response = handleGetWallet(request);
             case DEPOSIT -> response = handleDeposit(request);
             case WITHDRAW -> response = handleWithdraw(request);
-=======
-            case GET_AUCTIONS -> response = handleGetAuctions(request); // Sprint 3
-            case PLACE_BID -> response = handlePlaceBid(request);
-            case GET_WALLET -> response = handleGetWallet(request);
-            case DEPOSIT -> response = handleDeposit(request);
-            case WITHDRAW -> response = handleWithdraw(request);
-            
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
             default -> {
                 response.type = MessageType.ERROR;
                 response.success = false;
@@ -167,11 +130,7 @@ public class ClientHandler implements Runnable {
         return response;
     }
 
-<<<<<<< HEAD
     private ServerToClientMessage handleRegister(ClientToServerMessage request) {
-=======
-     private ServerToClientMessage handleRegister(ClientToServerMessage request) {
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
         UserRole role = parseRole(request.role);
         AuthService.RegisterResult result = authService.register(
                 request.fullName,
@@ -261,7 +220,6 @@ public class ClientHandler implements Runnable {
         return response;
     }
 
-<<<<<<< HEAD
     private ServerToClientMessage handleGetAuctions(ClientToServerMessage request) {
         List<Auction> auctions = auctionService.getAllAuctions();
         ServerToClientMessage response = new ServerToClientMessage();
@@ -355,8 +313,6 @@ public class ClientHandler implements Runnable {
         return response;
     }
 
-=======
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
     private User actorFromRequest(ClientToServerMessage request) {
         User user = new User();
         user.setId(request.userId == null ? request.sellerId : request.userId);
@@ -395,7 +351,6 @@ public class ClientHandler implements Runnable {
         return map;
     }
 
-<<<<<<< HEAD
     private Map<String, Object> auctionToMap(Auction auction) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", auction.getId());
@@ -407,89 +362,5 @@ public class ClientHandler implements Runnable {
         map.put("status", auction.getStatus());
         map.put("highestBidderId", auction.getHighestBidderId());
         return map;
-=======
-    private ServerToClientMessage handleGetAuctions(ClientToServerMessage request) { // 
-        ServerToClientMessage response = new ServerToClientMessage();
-
-        response.type = MessageType.AUCTION_LIST;
-        response.success = true;
-        response.code = "OK";
-
-        response.auctions = auctionService.getAllAuctions();
-
-        return response;
-    }
-
-    private ServerToClientMessage handlePlaceBid(ClientToServerMessage request) {
-        ServerToClientMessage response = new ServerToClientMessage();
-
-        User actor = actorFromRequest(request);
-
-        var result = auctionService.placeBid(
-                request.auctionId,
-                actor.getId(),
-                request.bidAmount
-        );
-
-        response.type = MessageType.BID_RESULT;
-        response.success = result.success();
-        response.code = result.code();
-        response.message = result.message();
-
-        if (!result.success()) {
-            response.error = result.message();
-            response.requiredTopUp = result.requiredTopUp();
-        }
-
-        return response;
-    }
-
-    private ServerToClientMessage handleGetWallet(ClientToServerMessage request) {
-        ServerToClientMessage response = new ServerToClientMessage();
-
-        User actor = actorFromRequest(request);
-
-        var wallet = walletService.getWallet(actor.getId());
-
-        response.type = MessageType.WALLET_RESULT;
-        response.success = true;
-        response.code = "OK";
-
-        response.balance = wallet.getBalance();
-        response.reserved = wallet.getReserved();
-        response.available = wallet.getAvailable();
-
-        return response;
-    }
-
-    private ServerToClientMessage handleDeposit(ClientToServerMessage request) {
-        ServerToClientMessage response = new ServerToClientMessage();
-
-        User actor = actorFromRequest(request);
-
-        boolean success = walletService.deposit(actor.getId(), request.amount);
-
-        response.type = MessageType.DEPOSIT_RESULT;
-        response.success = success;
-        response.code = success ? "OK" : "FAILED";
-        response.message = success ? "Nạp tiền thành công" : "Nạp tiền thất bại";
-
-        return response;
-    }
-
-    private ServerToClientMessage handleWithdraw(ClientToServerMessage request) {
-        ServerToClientMessage response = new ServerToClientMessage();
-
-        User actor = actorFromRequest(request);
-
-        boolean success = walletService.withdraw(actor.getId(), request.amount);
-
-        response.type = MessageType.WITHDRAW_RESULT;
-        response.success = success;
-        response.code = success ? "OK" : "FAILED";
-        response.message = success ? "Rút tiền thành công" : "Rút tiền thất bại";
-
-        return response;
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
     }
 }
