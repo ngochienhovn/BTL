@@ -1,12 +1,8 @@
 package com.ltnc.auction.server.services;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import com.ltnc.auction.server.dao.AuctionDAO;
 import com.ltnc.auction.server.dao.BidDAO;
@@ -58,16 +54,17 @@ class AuctionServiceBroadcastTest {
                 bidDAO,
                 userDAO,
                 walletDAO,
-                walletTransactionDAO
+                walletTransactionDAO,
+                broadcaster
         );
-
-        auctionService.setBroadcaster(broadcaster);
     }
 
     @Test
-    void testBidBroadcastsToAllClients() {
+    void testBidBroadcastsToAllClients() 
+    {
         Long auctionId = 1L;
         User user = buildUser(2L, "user@mail.com", "User Test");
+        Long bidderId = user.getId();
         Auction auction = buildRunningAuction(auctionId, 100.0, null);
         Wallet wallet = buildWallet(2L, "1000.00", "0.00");
 
@@ -84,7 +81,8 @@ class AuctionServiceBroadcastTest {
 
         assertTrue(result.success());
 
-        verify(broadcaster, atLeastOnce()).broadcast(any());
+        verify(broadcaster, atLeastOnce()).broadcastAuctionUpdate(eq(auctionId), any());
+        verify(broadcaster, atLeastOnce()).broadcastWalletUpdate(eq(bidderId), any());
         verify(bidDAO, times(1)).insert(any());
         verify(walletTransactionDAO, atLeastOnce()).insert(any());
     }
@@ -109,11 +107,8 @@ class AuctionServiceBroadcastTest {
 
         assertTrue(result.success());
 
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-
-        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
-
-        List<String> payloads = captor.getAllValues();
+        verify(broadcaster, atLeastOnce()).broadcastAuctionUpdate(eq(auctionId), any());
+        verify(broadcaster, atLeastOnce()).broadcastWalletUpdate(eq(user.getId()), any());
 
         assertTrue(
                 payloads.stream().anyMatch(payload -> payload.contains("AUCTION_UPDATE")),
@@ -158,11 +153,8 @@ class AuctionServiceBroadcastTest {
 
         assertTrue(result.success());
 
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-
-        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
-
-        List<String> payloads = captor.getAllValues();
+        verify(broadcaster, atLeastOnce()).broadcastAuctionUpdate(eq(auctionId), any());
+        verify(broadcaster, atLeastOnce()).broadcastWalletUpdate(eq(user.getId()), any());
 
         assertTrue(
                 payloads.stream().anyMatch(payload -> payload.contains("WALLET_UPDATE")

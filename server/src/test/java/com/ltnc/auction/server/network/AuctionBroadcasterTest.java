@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
+
 
 public class AuctionBroadcasterTest {
 
@@ -27,15 +29,20 @@ public class AuctionBroadcasterTest {
     void testBroadcasterListenerCleanup() {
         AuctionBroadcaster broadcaster = new AuctionBroadcaster();
 
-        broadcaster.broadcast("message-1");
-        broadcaster.broadcast("message-2");
+        ClientHandler client = mock(ClientHandler.class);
 
-        assertEquals(2, broadcaster.getMessages().size());
+        broadcaster.registerListener(client);
+        broadcaster.unregisterListener(client);
+        broadcaster.broadcastAuctionStateChange(1L, "RUNNING");
 
+<<<<<<< Updated upstream
         broadcaster.clear();
 
         assertEquals(0, broadcaster.getMessages().size());
         assertTrue(broadcaster.getMessages().isEmpty());
+=======
+        verify(client, never()).sendBroadcast(any());
+>>>>>>> Stashed changes
     }
 
     @Test

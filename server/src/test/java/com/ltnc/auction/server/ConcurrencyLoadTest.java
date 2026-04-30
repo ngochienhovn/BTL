@@ -1,14 +1,10 @@
 package com.ltnc.auction.server;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.ltnc.auction.server.dao.AuctionDAO;
 import com.ltnc.auction.server.dao.BidDAO;
@@ -70,10 +66,9 @@ class ConcurrencyLoadTest {
                 bidDAO,
                 userDAO,
                 walletDAO,
-                walletTransactionDAO
+                walletTransactionDAO,
+                broadcaster
         );
-
-        auctionService.setBroadcaster(broadcaster);
     }
 
     @Test
@@ -81,6 +76,8 @@ class ConcurrencyLoadTest {
         Long auctionId = 1L;
 
         Auction sharedAuction = buildRunningAuction(auctionId, 100.0, null);
+        double expectedMax = 150.0;
+        Auction finalAuction= sharedAuction;
         AtomicReference<BigDecimal> maxBid = new AtomicReference<>(BigDecimal.valueOf(100.0));
         AtomicReference<Exception> threadError = new AtomicReference<>();
 
@@ -161,17 +158,15 @@ class ConcurrencyLoadTest {
 
         startLatch.countDown();
 
-        boolean completed = doneLatch.await(15, TimeUnit.SECONDS);
-
         pool.shutdownNow();
 
         long durationMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 
-        assertTrue(completed, "Test bị timeout, có thể đang bị deadlock");
+        assertTrue(doneLatch.await(15, TimeUnit.SECONDS));
         assertTrue(durationMs < 15000, "Test phải hoàn thành dưới 15 giây");
         assertNull(threadError.get(), "Không được có exception trong thread");
 
-        assertEquals(150.0, maxBid.get().doubleValue(), 0.0001);
+        assertEquals(expectedMax, maxBid.get().doubleValue(), 0.0001);
         assertEquals(150.0, sharedAuction.getCurrentBid().doubleValue(), 0.0001);
 
         for (Wallet wallet : wallets.values()) {
@@ -181,12 +176,9 @@ class ConcurrencyLoadTest {
             );
         }
 
-        verify(broadcaster, atLeastOnce()).broadcast(any());
+        verify(broadcaster, atLeastOnce()).broadcastAuctionUpdate(eq(auctionId), any());
 
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(broadcaster, atLeastOnce()).broadcast(captor.capture());
-
-        List<String> payloads = captor.getAllValues();
+        verify(broadcaster, atLeastOnce()).broadcastWalletUpdate(eq(auctionId), any());
 
         assertTrue(
                 payloads.stream().anyMatch(payload -> payload.contains("AUCTION_UPDATE")),
