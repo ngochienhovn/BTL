@@ -29,27 +29,34 @@ public class ClientHandler implements Runnable {
     private final AuctionService auctionService;
     private final WalletService walletService;
     private final Gson gson = new Gson();
+    private final AuctionBroadcaster broadcaster;
+    private volatile Long authenticatedUserId;
+    private PrintWriter out;
 
     public ClientHandler(
             Socket socket,
             AuthService authService,
             ItemService itemService,
             AuctionService auctionService,
-            WalletService walletService
+            WalletService walletService,
+            AuctionBroadcaster broadcaster // sprint 4
     ) {
         this.socket = socket;
         this.authService = authService;
         this.itemService = itemService;
         this.auctionService = auctionService;
         this.walletService = walletService;
+        this.broadcaster = broadcaster; // sprint 4
     }
 
     @Override
     public void run() {
+        broadcaster.registerListener(this);  // sprint 4 client vừa connect -> thêm vào dsach
         try (
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)
         ) {
+            this.out = writer;
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println("[server] Received message from client: " + line);
@@ -60,12 +67,23 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("[server] Error handling client: " + e.getMessage());
         } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            broadcaster.unregisterListener(this); // sprint 4 client thoát -> xóa khỏi dsach
         }
+    }
+
+    public void sendBroadcast(ServerToClientMessage message) 
+    {
+        PrintWriter writer = this.out;
+
+        if (writer == null) throw new IllegalStateException("Client input is not ready");
+
+        writer.println(gson.toJson(message));
+        writer.flush();
+    }
+
+    public Long getAuthenticatedUserId() 
+    {
+        return this.authenticatedUserId;
     }
 
     private ServerToClientMessage handleMessage(ClientToServerMessage request) {
@@ -109,6 +127,7 @@ public class ClientHandler implements Runnable {
             response.error = result.code();
             return response;
         }
+        this.authenticatedUserId = result.user().getId();
         response.data = userToMap(result.user());
         return response;
     }
@@ -230,6 +249,14 @@ public class ClientHandler implements Runnable {
         if (!result.success()) {
             response.error = result.code();
             response.requiredTopUp = result.requiredTopUp();
+        } else {
+            response.auction = java.util.Map.of(
+                "auctionId", request.auctionId,
+                "currentBid", request.bidAmount,
+                "bidder", actor.getEmail()
+            );
+
+            broadcaster.broadcastAuctionUpdate(request.auctionId, result.auction());
         }
 
         return response;

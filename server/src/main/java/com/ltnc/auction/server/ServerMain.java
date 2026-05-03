@@ -12,6 +12,8 @@ import com.ltnc.auction.server.services.AuctionService;
 import com.ltnc.auction.server.services.AuthService;
 import com.ltnc.auction.server.services.ItemService;
 import com.ltnc.auction.server.services.WalletService;
+import com.ltnc.auction.server.services.AuctionStateManager;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
 
 public class ServerMain 
 {
@@ -33,13 +35,15 @@ public class ServerMain
         BidDAO bidDAO = new BidDAO();
         WalletDAO walletDAO = new WalletDAO();
         WalletTransactionDAO walletTransactionDAO = new WalletTransactionDAO();
+        AuctionBroadcaster broadcaster = new AuctionBroadcaster();
 
         AuthService authService = new AuthService(userDAO);
         ItemService itemService = new ItemService(itemDAO, authService);
-        AuctionService auctionService = new AuctionService(auctionDAO, bidDAO, userDAO, walletDAO, walletTransactionDAO);
+        AuctionService auctionService = new AuctionService(auctionDAO, bidDAO, userDAO, walletDAO, walletTransactionDAO, broadcaster);
         WalletService walletService = new WalletService(walletDAO, walletTransactionDAO);
+        AuctionStateManager auctionStateManager = new AuctionStateManager(auctionDAO, broadcaster);
 
-        SocketServer server = new SocketServer(port, authService, itemService, auctionService, walletService);
+        SocketServer server = new SocketServer(port, authService, itemService, auctionService, walletService, broadcaster);
         server.start();
     }
 }

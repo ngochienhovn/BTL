@@ -59,6 +59,21 @@ public class AuctionDAO {
         }
     }
 
+    public boolean updateStatus(Long auctionId, String status)
+    {
+        String sql = "UPDATE auctions SET status = ? WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) 
+        {
+            ps.setString(1, status);
+            ps.setLong(2, auctionId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update status", e);
+        }
+    }
+
     private Auction mapAuction(ResultSet rs) throws SQLException {
         Auction auction = new Auction();
         auction.setId(rs.getLong("id"));

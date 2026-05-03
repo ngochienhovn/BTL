@@ -21,6 +21,7 @@ import com.ltnc.auction.server.dao.WalletTransactionDAO;
 import com.ltnc.auction.server.model.Auction;
 import com.ltnc.auction.server.model.User;
 import com.ltnc.auction.server.model.Wallet;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -55,11 +56,14 @@ class AuctionServiceTest {
     @Mock
     private WalletTransactionDAO walletTransactionDAO;
 
+    @Mock
+    private AuctionBroadcaster broadcaster;
+
     private AuctionService auctionService;
 
     @BeforeEach
     void setUp() {
-        auctionService = new AuctionService(auctionDAO, bidDAO, userDAO, walletDAO, walletTransactionDAO);
+        auctionService = new AuctionService(auctionDAO, bidDAO, userDAO, walletDAO, walletTransactionDAO, broadcaster);
     }
 
     @Test
