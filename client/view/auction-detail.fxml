@@ -19,7 +19,7 @@
 
     <HBox spacing="8.0">
         <TextField fx:id="bidAmountField" promptText="Nhập giá bid"/>
-        <Button text="Place bid" onAction="#onPlaceBid"/>
+        <Button fx:id="bidButton" text="Place bid" onAction="#onPlaceBid"/>
     </HBox>
 
     <HBox spacing="8.0">
