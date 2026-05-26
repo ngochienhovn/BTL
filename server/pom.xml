@@ -6,11 +6,7 @@
 
   <parent>
     <groupId>com.ltnc.auction</groupId>
-<<<<<<< HEAD
     <artifactId>BTL</artifactId>
-=======
-    <artifactId>auction-system</artifactId>
->>>>>>> a7b09fa9049b4b79b22aea4f1f7fefb77ed2db5c
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
