@@ -18,241 +18,343 @@ public class DataSeeder {
 
     private DataSeeder() {}
 
+
     public static void seed() {
         try (Connection conn = DBConnection.getConnection()) {
-            if (hasAuctionData(conn)) {
-                LOG.info("Seed data already present, skipping");
-                return;
-            }
+
+            clearOldData(conn);
 
             LocalDateTime now = LocalDateTime.now();
 
-            // ── Users: đa role, đa wallet profile ───────────────────────────────
+            // =======================================================
+            // DEMO DATABASE - 7 AUCTION USE CASES
+            // =======================================================
+            // 1. RUNNING  - Có nhiều bid
+            // 2. RUNNING  - Không có bid
+            // 3. OPEN     - Sắp mở, chưa có bid
+            // 4. FINISHED - Có winner, chưa thanh toán
+            // 5. PAID     - Đã thanh toán xong
+            // 6. FINISHED - Không có bid
+            // 7. CANCELED - Phiên bị hủy
+            // =======================================================
+
+            // =======================================================
+            // USERS
+            // =======================================================
+
             long admin1 = getUserId(conn, "admin@gmail.com");
-            long admin2 = seedUser(conn, "Ops Admin", "ops.admin@gmail.com", "Ops@123", "ADMIN");
 
             long seller1 = getUserId(conn, "seller@gmail.com");
             long seller2 = seedUser(conn, "Nguyen Thi Lan", "lan@gmail.com", "Lan@123", "SELLER");
             long seller3 = seedUser(conn, "Pham Quoc Bao", "bao.seller@gmail.com", "Bao@123", "SELLER");
-            long seller4 = seedUser(conn, "Do Minh Chau", "chau.seller@gmail.com", "Chau@123", "SELLER");
 
             long bidder1 = getUserId(conn, "demo@gmail.com");
             long bidder2 = seedUser(conn, "Tran Van Binh", "binh@gmail.com", "Binh@123", "BIDDER");
             long bidder3 = seedUser(conn, "Le Thi Hoa", "hoa@gmail.com", "Hoa@123", "BIDDER");
             long bidder4 = seedUser(conn, "Mai Minh Anh", "anh@gmail.com", "Anh@123", "BIDDER");
             long bidder5 = seedUser(conn, "Vu Gia Khanh", "khanh@gmail.com", "Khanh@123", "BIDDER");
-            long bidder6 = seedUser(conn, "Ngoc Trinh", "trinh@gmail.com", "Trinh@123", "BIDDER");
 
-            // ── Wallets + wallet transactions: nhiều case balance/reserved ─────
+            // =======================================================
+            // WALLETS
+            // =======================================================
+            // balance  = tổng tiền user có
+            // reserved = tiền đang bị giữ do user đang thắng phiên chưa thanh toán
+
             upsertWallet(conn, admin1, 1_000_000_000, 0, now);
-            upsertWallet(conn, admin2, 500_000_000, 0, now);
+
             upsertWallet(conn, seller1, 120_000_000, 0, now);
-            upsertWallet(conn, seller2, 80_000_000, 0, now);
-            upsertWallet(conn, seller3, 45_000_000, 0, now);
-            upsertWallet(conn, seller4, 12_000_000, 0, now);
-            upsertWallet(conn, bidder1, 180_000_000, 12_000_000, now);
-            upsertWallet(conn, bidder2, 260_000_000, 64_500_000, now);
-            upsertWallet(conn, bidder3, 140_000_000, 18_200_000, now);
-            upsertWallet(conn, bidder4, 85_000_000, 6_500_000, now);
+            upsertWallet(conn, seller2, 92_500_000, 0, now);   // 80M + 12.5M nhận từ phiên PAID Canon
+            upsertWallet(conn, seller3, 45_000_000, 0, now);   // Sony FINISHED nhưng chưa thanh toán nên seller chưa nhận tiền
+
+            upsertWallet(conn, bidder1, 167_500_000, 0, now);  // đã thanh toán 12.5M phiên Canon
+            upsertWallet(conn, bidder2, 260_000_000, 29_500_000, now); // đang giữ tiền phiên Laptop
+            upsertWallet(conn, bidder3, 140_000_000, 6_800_000, now);  // thắng Sony nhưng chưa thanh toán
+            upsertWallet(conn, bidder4, 85_000_000, 0, now);
             upsertWallet(conn, bidder5, 42_500_000, 0, now);
-            upsertWallet(conn, bidder6, 15_200_000, 0, now);
 
-            insertWalletTx(conn, bidder1, "DEPOSIT", 210_000_000, null, now.minusDays(6));
-            insertWalletTx(conn, bidder1, "WITHDRAW", 30_000_000, null, now.minusDays(5));
-            insertWalletTx(conn, bidder1, "RESERVE", 12_000_000, null, now.minusHours(5));
+            // =======================================================
+            // WALLET TRANSACTIONS - NẠP TIỀN BAN ĐẦU
+            // =======================================================
 
-            insertWalletTx(conn, bidder2, "DEPOSIT", 320_000_000, null, now.minusDays(7));
-            insertWalletTx(conn, bidder2, "RESERVE", 48_000_000, null, now.minusHours(4));
-            insertWalletTx(conn, bidder2, "RESERVE", 16_500_000, null, now.minusMinutes(45));
+            insertWalletTx(conn, bidder1, "DEPOSIT", 180_000_000, null, now.minusDays(7));
+            insertWalletTx(conn, bidder2, "DEPOSIT", 260_000_000, null, now.minusDays(6));
+            insertWalletTx(conn, bidder3, "DEPOSIT", 140_000_000, null, now.minusDays(5));
+            insertWalletTx(conn, bidder4, "DEPOSIT", 85_000_000, null, now.minusDays(4));
+            insertWalletTx(conn, bidder5, "DEPOSIT", 42_500_000, null, now.minusDays(3));
 
-            insertWalletTx(conn, bidder3, "DEPOSIT", 160_000_000, null, now.minusDays(4));
-            insertWalletTx(conn, bidder3, "WITHDRAW", 20_000_000, null, now.minusDays(1));
-            insertWalletTx(conn, bidder3, "RESERVE", 18_200_000, null, now.minusHours(1));
+            // =======================================================
+            // ITEMS - 7 SẢN PHẨM
+            // =======================================================
 
-            insertWalletTx(conn, bidder6, "DEPOSIT", 15_200_000, null, now.minusHours(2));
-
-            // ── Items ──────────────────────────────────────────────────────────
             long item1 = insertItem(conn, seller1, "seller@gmail.com", "ELECTRONICS",
-                    "Laptop Dell XPS 15",
-                    "Dell XPS 15 OLED, Core i7-13700H, 32GB RAM, 1TB SSD, RTX 4060",
-                    25_000_000, imageUrl("laptop-dell-xps"));
+                    "Laptop Dell XPS 15 OLED 2024",
+                    "Dell XPS 15 OLED 2024, Core i7, RAM 32GB, SSD 1TB, màn OLED 3.5K. Máy còn bảo hành, ngoại hình 98%, phù hợp lập trình viên, designer và editor.",
+                    24_000_000,
+                    "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=1200&q=80");
+
             long item2 = insertItem(conn, seller1, "seller@gmail.com", "ELECTRONICS",
                     "iPhone 15 Pro Max 256GB",
-                    "Apple iPhone 15 Pro Max, màu Titan Tự Nhiên, fullbox chưa active",
-                    32_000_000, imageUrl("iphone-15-pro-max"));
+                    "iPhone 15 Pro Max 256GB màu Titan Tự Nhiên, fullbox, pin tốt, ngoại hình đẹp. ",
+                    22_000_000,
+                    "https://tse4.mm.bing.net/th/id/OIP.HdFzMBPOKKKvmqjw28b1NAHaE7?pid=Api&P=0&h=180");
+
             long item3 = insertItem(conn, seller2, "lan@gmail.com", "ART",
-                    "Tranh sơn dầu 'Hoàng Hôn Hạ Long'",
-                    "Tác phẩm sơn dầu trên toan canvas 80x120cm, phong cách hiện thực",
-                    5_000_000, imageUrl("oil-painting-halong"));
-            long item4 = insertItem(conn, seller2, "lan@gmail.com", "VEHICLE",
-                    "Honda Wave Alpha 2022",
-                    "Xe máy Honda Wave Alpha 110cc, màu đỏ đen, ODO 8.000km, còn bảo hành",
-                    18_000_000, imageUrl("honda-wave-alpha"));
-            long item5 = insertItem(conn, seller1, "seller@gmail.com", "ELECTRONICS",
+                    "Tranh sơn dầu Hoàng Hôn Hạ Long",
+                    "Tranh sơn dầu trên canvas kích thước 80x120cm, chủ đề hoàng hôn Vịnh Hạ Long.",
+                    8_000_000,
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=1200&q=80");
+
+            long item4 = insertItem(conn, seller3, "bao.seller@gmail.com", "ELECTRONICS",
                     "Sony WH-1000XM5 Headphones",
-                    "Tai nghe chống ồn Sony WH-1000XM5, màu đen, fullbox",
-                    7_500_000, imageUrl("sony-wh-1000xm5"));
+                    "Tai nghe Sony WH-1000XM5 chống ồn chủ động, màu đen, fullbox, dùng 6 tháng. ",
+                    5_500_000,
+                    "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=1200&q=80");
+
+            long item5 = insertItem(conn, seller2, "lan@gmail.com", "ELECTRONICS",
+                    "Máy ảnh Canon EOS M50 Mark II",
+                    "Máy ảnh Canon EOS M50 Mark II kèm lens kit, ngoại hình đẹp. ",
+                    10_000_000,
+                    "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80");
+
             long item6 = insertItem(conn, seller2, "lan@gmail.com", "ART",
-                    "Tượng gốm thủ công Bát Tràng",
-                    "Bộ 3 tượng gốm men ngọc thủ công làng Bát Tràng, cao 30cm",
-                    3_200_000, imageUrl("bat-trang-ceramic"));
-            long item7 = insertItem(conn, seller1, "seller@gmail.com", "ELECTRONICS",
-                    "Vintage Rolex Submariner 1960s",
-                    "Rare vintage Rolex Submariner in excellent condition. Original parts, fully serviced.",
-                    8_000_000, imageUrl("vintage-rolex"));
-            long item8 = insertItem(conn, seller1, "seller@gmail.com", "VEHICLE",
-                    "1967 Ford Mustang Fastback",
-                    "Iconic 1967 Mustang Fastback. Complete restoration, numbers matching, V8 engine.",
-                    350_000_000, imageUrl("ford-mustang-1967"));
-            long item9 = insertItem(conn, seller2, "lan@gmail.com", "ART",
-                    "1st Edition Charizard Pokemon Card (PSA 9)",
-                    "Extremely rare 1999 Base Set 1st Edition Charizard Holo. Graded PSA 9 Mint.",
-                    15_000_000, imageUrl("pokemon-card"));
-            long item10 = insertItem(conn, seller3, "bao.seller@gmail.com", "ELECTRONICS",
-                    "MacBook Pro M3 16\"",
-                    "Máy mới 99%, còn AppleCare, pin 100%, phụ kiện đầy đủ.",
-                    46_000_000, imageUrl("macbook-pro-m3"));
-            long item11 = insertItem(conn, seller3, "bao.seller@gmail.com", "ART",
-                    "Mô hình Gundam PG Unicorn LED",
-                    "Bản limited, full phụ kiện, chưa bung seal.",
-                    6_800_000, imageUrl("gundam-unicorn"));
-            long item12 = insertItem(conn, seller4, "chau.seller@gmail.com", "ART",
-                    "Trống đồng mini lưu niệm",
-                    "Đồ thủ công mạ đồng, hộp gỗ đi kèm.",
-                    1_200_000, imageUrl("bronze-drum"));
+                    "Bình gốm thủ công Bát Tràng",
+                    "Bình gốm Bát Tràng thủ công, men hỏa biến, cao 45cm.",
+                    3_200_000,
+                    "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=1200&q=80");
 
-            // ── Auctions: đầy đủ OPEN/RUNNING/FINISHED/CANCELED/PAID ─────────
-            long auc1 = insertAuction(conn, item1, "Đấu giá Laptop Dell XPS 15",
-                    "Laptop gaming/đồ họa cao cấp, xuất xứ USA", "ELECTRONICS",
-                    25_000_000, 27_500_000, now.minusHours(1), now.plusHours(2),
-                    "RUNNING", bidder2, "binh@gmail.com", "seller@gmail.com", imageUrl("laptop-dell-xps"));
-            long auc2 = insertAuction(conn, item2, "Đấu giá iPhone 15 Pro Max",
-                    "iPhone chính hãng Apple VN/A, nguyên seal", "ELECTRONICS",
-                    32_000_000, 34_000_000, now.minusMinutes(30), now.plusMinutes(45),
-                    "RUNNING", bidder1, "demo@gmail.com", "seller@gmail.com", imageUrl("iphone-15-pro-max"));
-            long auc3 = insertAuction(conn, item3, "Tranh sơn dầu Hoàng Hôn Hạ Long",
-                    "Tác phẩm nghệ thuật độc bản, có chứng nhận tác giả", "ART",
-                    5_000_000, 5_000_000, now.plusHours(1), now.plusHours(5),
-                    "OPEN", null, null, "lan@gmail.com", imageUrl("oil-painting-halong"));
-            long auc4 = insertAuction(conn, item4, "Honda Wave Alpha 2022 ODO thấp",
-                    "Xe còn mới, đầy đủ giấy tờ, sang tên ngay", "VEHICLE",
-                    18_000_000, 18_000_000, now.plusHours(3), now.plusHours(27),
-                    "OPEN", null, null, "lan@gmail.com", imageUrl("honda-wave-alpha"));
-            long auc5 = insertAuction(conn, item5, "Sony WH-1000XM5 – Phiên đã kết thúc",
-                    "Tai nghe chống ồn cao cấp nhất Sony 2023", "ELECTRONICS",
-                    7_500_000, 9_200_000, now.minusHours(5), now.minusHours(1),
-                    "FINISHED", bidder3, "hoa@gmail.com", "seller@gmail.com", imageUrl("sony-wh-1000xm5"));
-            long auc6 = insertAuction(conn, item6, "Tượng gốm Bát Tràng – Không có người đặt",
-                    "Đồ thủ công mỹ nghệ truyền thống Việt Nam", "ART",
-                    3_200_000, 3_200_000, now.minusHours(10), now.minusHours(3),
-                    "FINISHED", null, null, "lan@gmail.com", imageUrl("bat-trang-ceramic"));
-            long auc7 = insertAuction(conn, item7, "Vintage Rolex Submariner 1960s",
-                    "Rare vintage Rolex Submariner in excellent condition. Original parts.", "ELECTRONICS",
-                    8_000_000, 12_500_000, now.minusHours(4), now.plusDays(2),
-                    "RUNNING", bidder1, "demo@gmail.com", "seller@gmail.com",
-                    imageUrl("vintage-rolex"));
-            long auc8 = insertAuction(conn, item8, "1967 Ford Mustang Fastback",
-                    "Iconic 1967 Mustang Fastback. Complete restoration.", "VEHICLE",
-                    350_000_000, 450_000_000, now.minusDays(1), now.plusDays(3),
-                    "RUNNING", bidder2, "binh@gmail.com", "seller@gmail.com",
-                    imageUrl("ford-mustang-1967"));
-            long auc9 = insertAuction(conn, item9, "1st Edition Charizard Pokemon Card",
-                    "Extremely rare 1999 Base Set.", "ART",
-                    15_000_000, 22_000_000, now.minusDays(2), now.plusDays(4),
-                    "RUNNING", bidder3, "hoa@gmail.com", "lan@gmail.com",
-                    imageUrl("pokemon-card"));
-            long auc10 = insertAuction(conn, item10, "MacBook Pro M3 - bản premium",
-                    "Case anti-sniping: phiên sắp kết thúc trong 20 giây.", "ELECTRONICS",
-                    46_000_000, 49_000_000, now.minusMinutes(20), now.plusSeconds(20),
-                    "RUNNING", bidder4, "anh@gmail.com", "bao.seller@gmail.com",
-                    imageUrl("macbook-pro-m3"));
-            long auc11 = insertAuction(conn, item11, "Gundam PG Unicorn LED",
-                    "Dùng để test trạng thái CANCELED.", "ART",
-                    6_800_000, 6_800_000, now.minusHours(12), now.minusHours(2),
-                    "CANCELED", null, null, "bao.seller@gmail.com",
-                    imageUrl("gundam-unicorn"));
-            long auc12 = insertAuction(conn, item12, "Trống đồng mini (đã thanh toán)",
-                    "Case thanh toán hoàn tất sau phiên thắng.", "ART",
-                    1_200_000, 1_950_000, now.minusHours(15), now.minusHours(8),
-                    "PAID", bidder5, "khanh@gmail.com", "chau.seller@gmail.com",
-                    imageUrl("bronze-drum"));
+            long item7 = insertItem(conn, seller3, "bao.seller@gmail.com", "WATCHES",
+                    "Đồng hồ Seiko 5 Automatic",
+                    "Đồng hồ Seiko 5 Automatic, máy cơ, dây thép. ",
+                    2_500_000,
+                    "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=1200&q=80");
 
-            // ── Bid history ────────────────────────────────────────────────────
-            insertBid(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 25_500_000, now.minusMinutes(55));
-            insertBid(conn, auc1, bidder3, "hoa@gmail.com", "Le Thi Hoa", 26_000_000, now.minusMinutes(40));
-            insertBid(conn, auc1, bidder2, "binh@gmail.com", "Tran Van Binh", 26_500_000, now.minusMinutes(20));
-            insertBid(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 27_000_000, now.minusMinutes(10));
-            insertBid(conn, auc1, bidder2, "binh@gmail.com", "Tran Van Binh", 27_500_000, now.minusMinutes(3));
+            // =======================================================
+            // =======================================================
+            // AUCTIONS - 7 PHIÊN ĐẤU GIÁ
+            // =======================================================
 
-            insertBid(conn, auc2, bidder3, "hoa@gmail.com", "Le Thi Hoa", 32_500_000, now.minusMinutes(25));
-            insertBid(conn, auc2, bidder1, "demo@gmail.com", "Demo Bidder", 33_000_000, now.minusMinutes(15));
-            insertBid(conn, auc2, bidder3, "hoa@gmail.com", "Le Thi Hoa", 33_500_000, now.minusMinutes(8));
-            insertBid(conn, auc2, bidder1, "demo@gmail.com", "Demo Bidder", 34_000_000, now.minusMinutes(2));
+            // 1. Laptop - RUNNING - Có nhiều bid
+            long auc1 = insertAuction(conn, item1,
+                    "Laptop Dell XPS 15 OLED 2024",
+                    "Laptop cao cấp cho designer/dev, màn OLED, RAM 32GB, SSD 1TB.",
+                    "ELECTRONICS",
+                    24_000_000,
+                    29_500_000,
+                    now.minusHours(2),
+                    now.plusHours(6),
+                    "RUNNING",
+                    bidder2,
+                    "binh@gmail.com",
+                    "seller@gmail.com",
+                    "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=1200&q=80");
 
-            insertBid(conn, auc5, bidder1, "demo@gmail.com", "Demo Bidder", 7_800_000, now.minusHours(4));
-            insertBid(conn, auc5, bidder2, "binh@gmail.com", "Tran Van Binh", 8_200_000, now.minusHours(3).minusMinutes(30));
-            insertBid(conn, auc5, bidder3, "hoa@gmail.com", "Le Thi Hoa", 8_700_000, now.minusHours(2).minusMinutes(45));
-            insertBid(conn, auc5, bidder1, "demo@gmail.com", "Demo Bidder", 9_000_000, now.minusHours(2));
-            insertBid(conn, auc5, bidder3, "hoa@gmail.com", "Le Thi Hoa", 9_200_000, now.minusHours(1).minusMinutes(10));
+            // 2. iPhone - RUNNING - Không có bid
+            long auc2 = insertAuction(conn, item2,
+                    "iPhone 15 Pro Max 256GB",
+                    "iPhone 15 Pro Max 256GB, fullbox, màu Titan Tự Nhiên. Phiên này đang chạy nhưng chưa có người bid.",
+                    "ELECTRONICS",
+                    22_000_000,
+                    22_000_000,
+                    now.minusMinutes(30),
+                    now.plusHours(10),
+                    "RUNNING",
+                    null,
+                    null,
+                    "seller@gmail.com",
+                    "https://tse4.mm.bing.net/th/id/OIP.HdFzMBPOKKKvmqjw28b1NAHaE7?pid=Api&P=0&h=180");
 
-            insertBid(conn, auc7, bidder1, "demo@gmail.com", "Demo Bidder", 12_000_000, now.minusHours(1));
-            insertBid(conn, auc7, bidder2, "binh@gmail.com", "Tran Van Binh", 12_500_000, now.minusMinutes(30));
+            // 3. Tranh - OPEN - Sắp mở, chưa có bid
+            long auc3 = insertAuction(conn, item3,
+                    "Tranh sơn dầu Hoàng Hôn Hạ Long",
+                    "Tác phẩm nghệ thuật độc bản, có chứng nhận tác giả.",
+                    "ART",
+                    8_000_000,
+                    8_000_000,
+                    now.plusHours(4),
+                    now.plusDays(2),
+                    "OPEN",
+                    null,
+                    null,
+                    "lan@gmail.com",
+                    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=1200&q=80");
 
-            insertBid(conn, auc8, bidder3, "hoa@gmail.com", "Le Thi Hoa", 420_000_000, now.minusHours(4));
-            insertBid(conn, auc8, bidder1, "demo@gmail.com", "Demo Bidder", 450_000_000, now.minusMinutes(15));
+            // 4. Sony - FINISHED - Có winner nhưng chưa thanh toán
+            long auc4 = insertAuction(conn, item4,
+                    "Sony WH-1000XM5 Headphones",
+                    "Tai nghe chống ồn Sony WH-1000XM5, fullbox. Phiên này đã kết thúc, có người thắng nhưng chưa thanh toán.",
+                    "ELECTRONICS",
+                    5_500_000,
+                    6_800_000,
+                    now.minusDays(2),
+                    now.minusHours(1),
+                    "FINISHED",
+                    bidder3,
+                    "hoa@gmail.com",
+                    "bao.seller@gmail.com",
+                    "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=1200&q=80");
 
-            insertBid(conn, auc9, bidder2, "binh@gmail.com", "Tran Van Binh", 22_000_000, now.minusMinutes(10));
+            // 5. Canon - PAID - Đã thanh toán xong
+            long auc5 = insertAuction(conn, item5,
+                    "Máy ảnh Canon EOS M50 Mark II",
+                    "Máy ảnh Canon EOS M50 Mark II. Phiên này đã thanh toán xong.",
+                    "ELECTRONICS",
+                    10_000_000,
+                    12_500_000,
+                    now.minusDays(4),
+                    now.minusDays(3),
+                    "PAID",
+                    bidder1,
+                    "demo@gmail.com",
+                    "lan@gmail.com",
+                    "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80");
 
-            insertBid(conn, auc10, bidder6, "trinh@gmail.com", "Ngoc Trinh", 46_500_000, now.minusMinutes(12));
-            insertBid(conn, auc10, bidder4, "anh@gmail.com", "Mai Minh Anh", 47_000_000, now.minusMinutes(8));
-            insertBid(conn, auc10, bidder6, "trinh@gmail.com", "Ngoc Trinh", 48_000_000, now.minusMinutes(3));
-            insertBid(conn, auc10, bidder4, "anh@gmail.com", "Mai Minh Anh", 49_000_000, now.minusSeconds(15));
+            // 6. Bình gốm - FINISHED - Không có bid
+            long auc6 = insertAuction(conn, item6,
+                    "Bình gốm thủ công Bát Tràng",
+                    "Bình gốm thủ công Bát Tràng, men hỏa biến. Phiên này đã kết thúc nhưng không có người đặt giá.",
+                    "ART",
+                    3_200_000,
+                    3_200_000,
+                    now.minusDays(3),
+                    now.minusDays(1),
+                    "FINISHED",
+                    null,
+                    null,
+                    "lan@gmail.com",
+                    "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=1200&q=80");
 
-            insertBid(conn, auc12, bidder2, "binh@gmail.com", "Tran Van Binh", 1_500_000, now.minusHours(13));
-            insertBid(conn, auc12, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 1_950_000, now.minusHours(10));
+            // 7. Seiko - CANCELED - Phiên bị hủy
+            long auc7 = insertAuction(conn, item7,
+                    "Đồng hồ Seiko 5 Automatic",
+                    "Đồng hồ Seiko 5 Automatic. Phiên này đã bị hủy.",
+                    "WATCHES",
+                    2_500_000,
+                    2_800_000,
+                    now.minusDays(1),
+                    now.plusHours(3),
+                    "CANCELED",
+                    null,
+                    null,
+                    "bao.seller@gmail.com",
+                    "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=1200&q=80");
+            // =======================================================
+            // BID HISTORY
+            // =======================================================
 
-            insertBidSeries(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 28_600_000, 6, 220_000, now.minusMinutes(2));
-            insertBidSeries(conn, auc2, bidder3, "hoa@gmail.com", "Le Thi Hoa", 35_100_000, 5, 180_000, now.minusMinutes(1));
-            insertBidSeries(conn, auc7, bidder2, "binh@gmail.com", "Tran Van Binh", 13_700_000, 7, 170_000, now.minusMinutes(20));
-            insertBidSeries(conn, auc9, bidder3, "hoa@gmail.com", "Le Thi Hoa", 23_200_000, 6, 200_000, now.minusMinutes(30));
-            insertBidSeries(conn, auc10, bidder4, "anh@gmail.com", "Mai Minh Anh", 50_200_000, 10, 150_000, now.minusSeconds(40));
+            // UC1: Laptop - RUNNING - Có nhiều lượt bid
+            insertBid(conn, auc1, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 24_500_000, now.minusMinutes(118));
+            insertBid(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 25_000_000, now.minusMinutes(111));
+            insertBid(conn, auc1, bidder4, "anh@gmail.com", "Mai Minh Anh", 25_500_000, now.minusMinutes(103));
+            insertBid(conn, auc1, bidder3, "hoa@gmail.com", "Le Thi Hoa", 26_000_000, now.minusMinutes(96));
+            insertBid(conn, auc1, bidder2, "binh@gmail.com", "Tran Van Binh", 26_500_000, now.minusMinutes(88));
+            insertBid(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 27_000_000, now.minusMinutes(81));
+            insertBid(conn, auc1, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 27_500_000, now.minusMinutes(73));
+            insertBid(conn, auc1, bidder4, "anh@gmail.com", "Mai Minh Anh", 28_000_000, now.minusMinutes(66));
+            insertBid(conn, auc1, bidder3, "hoa@gmail.com", "Le Thi Hoa", 28_500_000, now.minusMinutes(54));
+            insertBid(conn, auc1, bidder1, "demo@gmail.com", "Demo Bidder", 29_000_000, now.minusMinutes(41));
+            insertBid(conn, auc1, bidder4, "anh@gmail.com", "Mai Minh Anh", 29_200_000, now.minusMinutes(25));
+            insertBid(conn, auc1, bidder2, "binh@gmail.com", "Tran Van Binh", 29_500_000, now.minusMinutes(4));
 
-            updateAuctionLeader(conn, auc1, 29_700_000, bidder1, "demo@gmail.com");
-            updateAuctionLeader(conn, auc2, 35_820_000, bidder3, "hoa@gmail.com");
-            updateAuctionLeader(conn, auc7, 14_720_000, bidder2, "binh@gmail.com");
-            updateAuctionLeader(conn, auc9, 24_200_000, bidder3, "hoa@gmail.com");
-            updateAuctionLeader(conn, auc10, 51_550_000, bidder4, "anh@gmail.com");
+            // UC2: iPhone - RUNNING - Không có bid
+            // Không insertBid cho auc2
 
-            insertAutoBid(conn, auc1, bidder1, "demo@gmail.com", 30_000_000, 500_000);
-            insertAutoBid(conn, auc2, bidder3, "hoa@gmail.com", 36_000_000, 500_000);
-            insertAutoBid(conn, auc7, bidder4, "anh@gmail.com", 13_000_000, 200_000);
-            insertAutoBid(conn, auc10, bidder6, "trinh@gmail.com", 49_500_000, 250_000);
+            // UC3: Tranh - OPEN/upcoming - Chưa có bid
+            // Không insertBid cho auc3
 
-            insertWalletTx(conn, bidder2, "RESERVE", 27_500_000, auc1, now.minusMinutes(3));
-            insertWalletTx(conn, bidder1, "RELEASE", 27_000_000, auc1, now.minusMinutes(3));
-            insertWalletTx(conn, bidder4, "RESERVE", 49_000_000, auc10, now.minusSeconds(15));
-            insertWalletTx(conn, bidder6, "RELEASE", 48_000_000, auc10, now.minusSeconds(15));
+            // UC4: Sony - FINISHED - Có winner nhưng chưa thanh toán
+            insertBid(conn, auc4, bidder4, "anh@gmail.com", "Mai Minh Anh", 5_600_000, now.minusDays(1).minusHours(23));
+            insertBid(conn, auc4, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 5_800_000, now.minusDays(1).minusHours(22));
+            insertBid(conn, auc4, bidder1, "demo@gmail.com", "Demo Bidder", 6_000_000, now.minusDays(1).minusHours(21));
+            insertBid(conn, auc4, bidder2, "binh@gmail.com", "Tran Van Binh", 6_200_000, now.minusDays(1).minusHours(20));
+            insertBid(conn, auc4, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 6_400_000, now.minusDays(1).minusHours(19));
+            insertBid(conn, auc4, bidder1, "demo@gmail.com", "Demo Bidder", 6_600_000, now.minusDays(1).minusHours(18));
+            insertBid(conn, auc4, bidder3, "hoa@gmail.com", "Le Thi Hoa", 6_800_000, now.minusDays(1).minusHours(17));
 
-            seedBulkDemoData(
-                    conn,
-                    now,
-                    new long[] {seller1, seller2, seller3, seller4},
-                    new String[] {"seller@gmail.com", "lan@gmail.com", "bao.seller@gmail.com", "chau.seller@gmail.com"},
-                    new long[] {bidder1, bidder2, bidder3, bidder4, bidder5, bidder6},
-                    new String[] {"demo@gmail.com", "binh@gmail.com", "hoa@gmail.com", "anh@gmail.com", "khanh@gmail.com", "trinh@gmail.com"});
+            // UC5: Canon - PAID - Đã thanh toán xong
+            insertBid(conn, auc5, bidder4, "anh@gmail.com", "Mai Minh Anh", 10_500_000, now.minusDays(3).minusHours(23));
+            insertBid(conn, auc5, bidder2, "binh@gmail.com", "Tran Van Binh", 11_000_000, now.minusDays(3).minusHours(22));
+            insertBid(conn, auc5, bidder1, "demo@gmail.com", "Demo Bidder", 12_500_000, now.minusDays(3).minusHours(21));
 
-            LOG.info("Fake seed data inserted successfully (rich dataset)");
+            // UC6: Bình gốm - FINISHED - Không có bid
+            // Không insertBid cho auc6
+
+            // UC7: Seiko - CANCELED - Có bid trước khi bị hủy
+            insertBid(conn, auc7, bidder5, "khanh@gmail.com", "Vu Gia Khanh", 2_800_000, now.minusHours(20));
+
+            // =======================================================
+            // WALLET TRANSACTIONS LIÊN QUAN ĐẤU GIÁ
+            // =======================================================
+
+            // UC1 - Laptop đang chạy
+            insertWalletTx(conn, bidder1, "RESERVE", 29_000_000, auc1, now.minusMinutes(41));
+            insertWalletTx(conn, bidder1, "RELEASE", 29_000_000, auc1, now.minusMinutes(25));
+
+            insertWalletTx(conn, bidder4, "RESERVE", 29_200_000, auc1, now.minusMinutes(25));
+            insertWalletTx(conn, bidder4, "RELEASE", 29_200_000, auc1, now.minusMinutes(4));
+
+            insertWalletTx(conn, bidder2, "RESERVE", 29_500_000, auc1, now.minusMinutes(4));
+
+            // UC4 - Sony FINISHED có winner nhưng chưa thanh toán
+            insertWalletTx(conn, bidder3, "RESERVE", 6_800_000, auc4, now.minusDays(1).minusHours(17));
+
+            // UC5 - Canon PAID đã thanh toán xong
+            insertWalletTx(conn, bidder1, "RESERVE", 12_500_000, auc5, now.minusDays(3).minusHours(21));
+            insertWalletTx(conn, bidder1, "PAYMENT", 12_500_000, auc5, now.minusDays(3).minusHours(20));
+            insertWalletTx(conn, seller2, "RECEIVE", 12_500_000, auc5, now.minusDays(3).minusHours(20));
+
+            // UC7 - Seiko CANCELED nên hoàn tiền giữ chỗ
+            insertWalletTx(conn, bidder5, "RESERVE", 2_800_000, auc7, now.minusHours(20));
+            insertWalletTx(conn, bidder5, "RELEASE", 2_800_000, auc7, now.minusHours(19));
+
+            // =======================================================
+            // NOTIFICATIONS
+            // =======================================================
+            insertNotification(conn, admin1, "System Alert", "System is running smoothly. 35 bulk auctions generated.", "INFO", false, now.minusHours(1));
+            insertNotification(conn, seller1, "Sản phẩm được quan tâm", "Laptop Dell XPS của bạn đang nhận được nhiều lượt trả giá!", "SUCCESS", false, now.minusMinutes(30));
+            insertNotification(conn, bidder1, "Chào mừng", "Chào mừng bạn đến với hệ thống đấu giá BidMaster!", "INFO", false, now.minusDays(1));
+            insertNotification(conn, bidder1, "Sắp kết thúc", "Phiên đấu giá Laptop Dell XPS 15 sắp kết thúc. Hãy nhanh tay trả giá!", "WARNING", false, now.minusMinutes(10));
+
+            // =======================================================
+            // AUTO-BID CHO DEMO
+            // =======================================================
+            // Cài đặt cho binh@gmail.com tự động trả giá đè ở UC1 (Laptop)
+            insertAutoBid(conn, auc1, bidder2, "binh@gmail.com", 35_000_000, 500_000);
+            
+            // Cài đặt cho khanh@gmail.com tự động trả giá đè ở UC2 (iPhone)
+            insertAutoBid(conn, auc2, bidder5, "khanh@gmail.com", 25_000_000, 200_000);
+
+            LOG.info("Fake seed data inserted successfully (7 auction use cases)");
             LOG.info("Demo users: demo@gmail.com / seller@gmail.com / admin@gmail.com");
-            LOG.info("Extra users: binh@gmail.com, hoa@gmail.com, anh@gmail.com, khanh@gmail.com, trinh@gmail.com");
+            LOG.info("Extra users: binh@gmail.com, hoa@gmail.com, anh@gmail.com, khanh@gmail.com");
         } catch (SQLException e) {
             throw new RuntimeException("Failed to seed fake data", e);
         }
     }
 
-    private static boolean hasAuctionData(Connection conn) throws SQLException {
+private static void clearOldData(Connection conn) throws SQLException {
+    try (Statement st = conn.createStatement()) {
+        st.execute("SET REFERENTIAL_INTEGRITY FALSE");
+
+        st.executeUpdate("DELETE FROM notifications");
+        st.executeUpdate("DELETE FROM auto_bid_configs");
+        st.executeUpdate("DELETE FROM bid_transactions");
+        st.executeUpdate("DELETE FROM wallet_transactions");
+        st.executeUpdate("DELETE FROM auctions");
+        st.executeUpdate("DELETE FROM items");
+        st.executeUpdate("DELETE FROM wallets");
+
+        st.executeUpdate("""
+            DELETE FROM users
+            WHERE username NOT IN ('admin@gmail.com', 'seller@gmail.com', 'demo@gmail.com')
+        """);
+
+        st.execute("SET REFERENTIAL_INTEGRITY TRUE");
+    }
+}
+    private static boolean isEmpty(Connection conn) throws SQLException {
         try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM auctions")) {
-            return rs.next() && rs.getLong(1) > 0;
+             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM items")) {
+            return rs.next() && rs.getLong(1) == 0;
         }
     }
 
@@ -327,7 +429,7 @@ public class DataSeeder {
             String[] sellerEmails,
             long[] bidderIds,
             String[] bidderEmails) throws SQLException {
-        String[] categories = {"ELECTRONICS", "ART", "VEHICLE"};
+        String[] categories = {"ELECTRONICS", "ART", "VEHICLE", "COLLECTIBLES", "WATCHES"};
         String[] statuses = {"RUNNING", "OPEN", "FINISHED", "CANCELED", "PAID"};
 
         // 20 user profiles giả lập bổ sung: mỗi user có wallet + lịch sử nạp/rút.
@@ -362,7 +464,7 @@ public class DataSeeder {
                     "[Bulk] " + category + " Item " + (i + 1),
                     "Bulk generated dataset item #" + (i + 1) + " for stress testing feed/filter/detail views.",
                     startingBid,
-                    imageUrl("auction-item-" + (100 + i)));
+                    "https://picsum.photos/seed/auction-" + (100 + i) + "/1200/800.jpg");
 
             LocalDateTime start;
             LocalDateTime end;
@@ -400,19 +502,15 @@ public class DataSeeder {
                     highestBidderId,
                     winnerEmail,
                     sellerEmails[sellerIdx],
-                    imageUrl("auction-cover-" + (100 + i)));
+                    "https://picsum.photos/seed/auction-cover-" + (100 + i) + "/1200/800.jpg");
 
             if (!"OPEN".equals(status) && !"CANCELED".equals(status)) {
                 insertBid(conn, auctionId, bidderIds[bidderAltIdx], bidderEmails[bidderAltIdx],
                         "Bulk Bidder Alt", startingBid + 500_000, end.minusHours(2));
                 insertBid(conn, auctionId, bidderIds[bidderLeadIdx], bidderEmails[bidderLeadIdx],
                         "Bulk Bidder Lead", currentBid, end.minusMinutes(12));
-                double seriesStart = currentBid + 250_000;
-                int seriesCount = 6 + (i % 5);
                 insertBidSeries(conn, auctionId, bidderIds[bidderLeadIdx], bidderEmails[bidderLeadIdx],
-                        "Bulk Bidder Lead", seriesStart, seriesCount, 125_000, end.minusMinutes(10));
-                updateAuctionLeader(conn, auctionId, seriesStart + ((seriesCount - 1) * 125_000),
-                        bidderIds[bidderLeadIdx], bidderEmails[bidderLeadIdx]);
+                        "Bulk Bidder Lead", currentBid + 250_000, 6 + (i % 5), 125_000, end.minusMinutes(10));
             }
 
             if ("RUNNING".equals(status) && (i % 2 == 0)) {
@@ -533,20 +631,19 @@ public class DataSeeder {
             ps.executeUpdate();
         }
     }
-
-    private static void updateAuctionLeader(Connection conn, long auctionId, double amount,
-            long bidderId, String bidderEmail) throws SQLException {
+    private static void insertNotification(Connection conn, long userId, String title,
+                                           String message, String type, boolean isRead,
+                                           LocalDateTime createdAt) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE auctions SET current_bid = ?, highest_bidder_id = ?, winner_email = ? WHERE id = ?")) {
-            ps.setDouble(1, amount);
-            ps.setLong(2, bidderId);
-            ps.setString(3, bidderEmail);
-            ps.setLong(4, auctionId);
+                "INSERT INTO notifications (user_id, title, message, type, is_read, created_at) " +
+                "VALUES (?,?,?,?,?,?)")) {
+            ps.setLong(1, userId);
+            ps.setString(2, title);
+            ps.setString(3, message);
+            ps.setString(4, type);
+            ps.setBoolean(5, isRead);
+            ps.setTimestamp(6, Timestamp.valueOf(createdAt));
             ps.executeUpdate();
         }
-    }
-
-    private static String imageUrl(String seed) {
-        return "https://picsum.photos/seed/" + seed + "/1200/800";
     }
 }
