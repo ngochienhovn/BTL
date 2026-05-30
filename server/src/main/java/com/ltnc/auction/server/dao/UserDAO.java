@@ -1,0 +1,127 @@
+package com.ltnc.auction.server.dao;
+
+import com.ltnc.auction.server.db.DBConnection;
+import com.ltnc.auction.server.model.Admin;
+import com.ltnc.auction.server.model.Bidder;
+import com.ltnc.auction.server.model.Seller;
+import com.ltnc.auction.server.model.User;
+import com.ltnc.auction.server.model.UserRole;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserDAO {
+
+    public User findByEmail(String email) {
+        String sql = "SELECT id, full_name, username, password_hash, role FROM users WHERE username = ? AND is_deleted = FALSE";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding user by email", e);
+        }
+        return null;
+    }
+
+    public User findById(Long id) {
+        String sql = "SELECT id, full_name, username, password_hash, role FROM users WHERE id = ? AND is_deleted = FALSE";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding user by id", e);
+        }
+        return null;
+    }
+
+    public Long insert(User user) {
+        String sql = "INSERT INTO users (username, full_name, password_hash, role) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getPasswordHash());
+            ps.setString(4, user.getRole().name());
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error inserting user", e);
+        }
+        return null;
+    }
+
+    public boolean update(User user) {
+        String sql = "UPDATE users SET full_name = ?, password_hash = ?, role = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getPasswordHash());
+            ps.setString(3, user.getRole().name());
+            ps.setLong(4, user.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating user", e);
+        }
+    }
+
+    public boolean delete(Long id) {
+        String sql = "UPDATE users SET is_deleted = TRUE WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting user", e);
+        }
+    }
+
+    public List<User> findAll() {
+        String sql = "SELECT id, full_name, username, password_hash, role FROM users WHERE is_deleted = FALSE ORDER BY id";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding all users", e);
+        }
+        return users;
+    }
+
+    private User mapUser(ResultSet rs) throws SQLException {
+        long id = rs.getLong("id");
+        String fullName = rs.getString("full_name");
+        String email = rs.getString("username");
+        String passwordHash = rs.getString("password_hash");
+        String roleStr = rs.getString("role");
+        UserRole role = UserRole.valueOf(roleStr);
+
+        User user = switch (role) {
+            case SELLER -> new Seller(fullName, email, passwordHash);
+            case ADMIN -> new Admin(fullName, email, passwordHash);
+            default -> new Bidder(fullName, email, passwordHash);
+        };
+        user.setId(id);
+        return user;
+    }
+}

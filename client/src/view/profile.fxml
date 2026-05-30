@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.ProfileController">
+    <stylesheets>
+        <URL value="@/resources/css/home-page.css" />
+        <URL value="@/resources/css/dashboards.css" />
+    </stylesheets>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="top-bar">
+            <padding>
+                <Insets top="16.0" right="40.0" bottom="16.0" left="40.0" />
+            </padding>
+            <Button styleClass="secondary-button" text="%nav.back" onAction="#onBackHome" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="brand-title" text="%nav.profile" />
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="32.0" styleClass="page-root-inner">
+                    <padding>
+                        <Insets top="40.0" right="40.0" bottom="60.0" left="40.0" />
+                    </padding>
+                    
+                    <VBox spacing="32.0" maxWidth="800.0">
+                        <HBox spacing="32.0" alignment="CENTER_LEFT" styleClass="form-card">
+                            <Label style="-fx-font-size: 80px; -fx-padding: 20; -fx-background-color: -color-bg-subtle; -fx-background-radius: 100;" text="👤" />
+                            <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                <Label fx:id="nameLabel" styleClass="page-title" style="-fx-font-size: 32px;" text="User Name" />
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                    <Label fx:id="roleLabel" styleClass="card-badge badge-new" text="ROLE" />
+                                    <Label fx:id="emailLabel" styleClass="item-row-meta" text="email@example.com" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                        <VBox spacing="24.0">
+                            <VBox spacing="20.0" styleClass="form-card">
+                                <Label styleClass="form-header" text="Account Information" />
+                                
+                                <VBox spacing="15.0">
+                                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                        <Label text="📧" styleClass="profile-row-icon" />
+                                        <VBox spacing="2.0">
+                                            <Label text="%profile.field.email" styleClass="stat-label" />
+                                            <Label fx:id="emailLabel2" styleClass="item-row-title" />
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                        <Label text="🔑" styleClass="profile-row-icon" />
+                                        <VBox spacing="2.0">
+                                            <Label text="%profile.field.accountType" styleClass="stat-label" />
+                                            <Label fx:id="accountTypeLabel" styleClass="item-row-title" />
+                                        </VBox>
+                                    </HBox>
+
+                                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                        <Label text="📅" styleClass="profile-row-icon" />
+                                        <VBox spacing="2.0">
+                                            <Label text="%profile.field.memberSince" styleClass="stat-label" />
+                                            <Label fx:id="memberSinceLabel" styleClass="item-row-title" text="2026" />
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                                
+                                <HBox spacing="10.0" style="-fx-padding: 15 0 0 0; -fx-border-color: -color-border-subtle; -fx-border-width: 1 0 0 0;">
+                                    <Button styleClass="secondary-button" text="%profile.editName.title" onAction="#onEditName" />
+                                    <Button styleClass="secondary-button" text="%profile.changePassword.title" onAction="#onChangePassword" />
+                                </HBox>
+                            </VBox>
+                            
+                            <VBox fx:id="statsCard" spacing="20.0" styleClass="form-card">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label styleClass="form-header" text="%profile.stats.title" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <VBox alignment="CENTER_RIGHT" spacing="2">
+                                        <Label text="%profile.wallet.balance" styleClass="stat-label" style="-fx-font-size: 11px;" />
+                                        <Label fx:id="walletBalanceLabel" text="\$0.00" styleClass="wallet-val" style="-fx-font-size: 18px; -fx-text-fill: -color-accent-emphasis;" />
+                                    </VBox>
+                                </HBox>
+                                <VBox spacing="12.0">
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Label text="%profile.stats.totalBids" styleClass="stat-label" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="totalBidsLabel" text="0" styleClass="wallet-val" />
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Label text="%profile.stats.winning" styleClass="stat-label" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="winningCountLabel" text="0" styleClass="wallet-val" style="-fx-text-fill: -color-success-emphasis;" />
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Label text="%profile.stats.won" styleClass="stat-label" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="wonCountLabel" text="0" styleClass="wallet-val" style="-fx-text-fill: -color-success-emphasis; -fx-font-weight: bold;" />
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Label text="%profile.stats.lost" styleClass="stat-label" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="lostCountLabel" text="0" styleClass="wallet-val" style="-fx-text-fill: -color-danger-emphasis;" />
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <Label text="%profile.stats.watchlist" styleClass="stat-label" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="watchlistCountLabel" text="0" styleClass="wallet-val" />
+                                    </HBox>
+                                </VBox>
+                                <HBox spacing="10.0" style="-fx-padding: 10 0 0 0; -fx-border-color: -color-border-subtle; -fx-border-width: 1 0 0 0;">
+                                    <Button styleClass="primary-button" text="%profile.wallet.deposit" onAction="#onDeposit" />
+                                    <Button styleClass="secondary-button" text="Withdraw" onAction="#onWithdraw" />
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

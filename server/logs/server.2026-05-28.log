@@ -1,0 +1,9 @@
+2026-05-28 20:16:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Starting...
+2026-05-28 20:16:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - BidMasterHiPool - Added connection conn1: url=jdbc:h2:./data/auction_db user=SA
+2026-05-28 20:16:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Start completed.
+2026-05-28 20:17:31 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Starting...
+2026-05-28 20:17:31 [main] INFO  com.zaxxer.hikari.pool.HikariPool - BidMasterHiPool - Added connection conn1: url=jdbc:h2:./data/auction_db user=SA
+2026-05-28 20:17:31 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Start completed.
+2026-05-28 20:18:00 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Starting...
+2026-05-28 20:18:00 [main] INFO  com.zaxxer.hikari.pool.HikariPool - BidMasterHiPool - Added connection conn1: url=jdbc:h2:./data/auction_db user=SA
+2026-05-28 20:18:00 [main] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Start completed.

@@ -1,0 +1,6 @@
+2026-05-29 22:39:43.880597+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NOTIFICATIONS" not found (this database is empty); SQL statement:
+INSERT INTO notifications (user_id, title, message, type, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?) [42104-224]
+2026-05-29 22:39:44.073239+07:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NOTIFICATIONS" not found (this database is empty); SQL statement:
+INSERT INTO notifications (user_id, title, message, type, is_read, created_at) VALUES (?, ?, ?, ?, ?, ?) [42104-224]

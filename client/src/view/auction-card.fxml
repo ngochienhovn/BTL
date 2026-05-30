@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox fx:id="root" prefWidth="230.0" styleClass="auction-card" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.AuctionCardController">
+   <children>
+      <StackPane fx:id="imageWrap" onMouseClicked="#onCardClicked" styleClass="card-image-wrap">
+         <children>
+            <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="230.0" pickOnBounds="true" styleClass="card-image" />
+            <VBox spacing="8.0" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="16.0" top="16.0" />
+               </StackPane.margin>
+               <children>
+                  <Label fx:id="badgeLabel" styleClass="card-badge" />
+                  <javafx.scene.layout.HBox fx:id="statusBadgeContainer" styleClass="status-badge-container" />
+               </children>
+            </VBox>
+            <Button fx:id="likeButton" mnemonicParsing="false" onAction="#onLikeClicked" styleClass="card-like-button" StackPane.alignment="TOP_RIGHT">
+               <graphic>
+                  <SVGPath fx:id="likeIcon" content="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ef4444" scaleX="0.8" scaleY="0.8" />
+               </graphic>
+               <StackPane.margin>
+                  <Insets right="16.0" top="16.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
+      <StackPane fx:id="progressContainer" prefHeight="4.0" styleClass="card-progress-container">
+         <children>
+            <Region fx:id="progressFill" maxWidth="0.0" prefHeight="4.0" styleClass="card-progress-fill" StackPane.alignment="CENTER_LEFT" />
+         </children>
+      </StackPane>
+      <VBox onMouseClicked="#onCardClicked" spacing="20.0" VBox.vgrow="ALWAYS">
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="20.0" />
+         </padding>
+         <children>
+            <VBox spacing="4.0">
+               <children>
+                  <Label fx:id="titleLabel" styleClass="card-title" text="Auction Title" wrapText="true"/>
+                  <Label fx:id="descriptionLabel" styleClass="card-description" text="Description goes here..." wrapText="false" textOverrun="WORD_ELLIPSIS"/>
+               </children>
+            </VBox>
+            <Region VBox.vgrow="ALWAYS" />
+            
+            <HBox spacing="10.0" alignment="BOTTOM_LEFT">
+               <children>
+                  <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="card-meta" text="CURRENT BID"/>
+                        <Label fx:id="bidLabel" styleClass="card-bid"/>
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0" alignment="BOTTOM_RIGHT">
+                     <children>
+                        <Label fx:id="timerLabel" styleClass="card-timer"/>
+                        <Label fx:id="bidCountLabel" styleClass="card-meta"/>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <Button fx:id="actionButton" maxWidth="Infinity" mnemonicParsing="false" onAction="#onActionClicked" styleClass="card-action-btn" text="View Auction"/>
+         </children>
+      </VBox>
+   </children>
+</VBox>

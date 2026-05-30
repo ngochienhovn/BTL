@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@/resources/css/home-page.css" xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.AuthController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="top-bar">
+            <padding>
+                <Insets top="16.0" right="24.0" bottom="16.0" left="24.0" />
+            </padding>
+            <Button styleClass="secondary-button" text="%nav.back" onAction="#onBackHome" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="brand-title" text="%nav.signIn" />
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="12.0" styleClass="auth-wrapper">
+            <VBox spacing="12.0" styleClass="auth-card" maxWidth="420.0">
+                <padding>
+                    <Insets top="28.0" right="28.0" bottom="28.0" left="28.0" />
+                </padding>
+                <Label styleClass="section-title" text="%signIn.welcome" />
+                <TextField fx:id="signInEmailField" promptText="%signIn.email.prompt" />
+                <Label fx:id="signInEmailErrorLabel" styleClass="error-label" text=""
+                    visible="false" managed="false" />
+                <PasswordField fx:id="signInPasswordField" promptText="%signIn.password.prompt" />
+                <Label fx:id="signInPasswordErrorLabel" styleClass="error-label" text=""
+                    visible="false" managed="false" />
+                <Button fx:id="signInSubmitButton" styleClass="primary-button" text="%signIn.button"
+                    maxWidth="1.7976931348623157E308" onAction="#onSubmitSignIn" />
+                <HBox alignment="CENTER" spacing="6.0">
+                    <Label styleClass="card-meta" text="%signIn.noAccount" />
+                    <Button styleClass="nav-ghost" text="%nav.signUp" onAction="#onOpenSignUp" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

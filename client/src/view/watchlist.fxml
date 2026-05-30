@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.WatchlistController">
+    <stylesheets>
+        <URL value="@/resources/css/home-page.css" />
+        <URL value="@/resources/css/dashboards.css" />
+    </stylesheets>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="top-bar">
+            <padding>
+                <Insets top="16.0" right="40.0" bottom="16.0" left="40.0" />
+            </padding>
+            <Button styleClass="secondary-button" text="%nav.back" onAction="#onBackHome" />
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER_RIGHT">
+                <Label styleClass="brand-title" text="%watchlist.pageTitle" />
+                <Label styleClass="item-row-meta" text="Items you are following" />
+            </VBox>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="24.0" styleClass="page-root-inner">
+                    <padding>
+                        <Insets top="40.0" right="40.0" bottom="40.0" left="40.0" />
+                    </padding>
+                    
+                    <VBox spacing="8.0" maxWidth="1200.0">
+                        <Label styleClass="section-title" text="%watchlist.section" />
+                        <Label fx:id="countLabel" styleClass="item-row-meta" text="0 items" />
+                    </VBox>
+
+                    <FlowPane fx:id="watchlistGrid" alignment="TOP_CENTER" hgap="24.0" vgap="32.0" maxWidth="1200.0" />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Verify (compile, test, package)
+        run: mvn -B -q verify -pl shared,server,client -am
+
+      - name: Upload server fat JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-fat-jar
+          path: server/target/server-fat.jar
+          if-no-files-found: warn

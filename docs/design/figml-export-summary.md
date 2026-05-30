@@ -1,0 +1,344 @@
+# FigML export summary
+
+- **Input**: `figml-export.xml`
+- **Pages**: 1
+
+## Pages
+- `Page_1`
+
+## Node counts (by tag)
+- **constraints**: 212
+- **fill**: 129
+- **children**: 116
+- **fills**: 107
+- **Frame**: 106
+- **overriddenField**: 58
+- **Text**: 56
+- **fontName**: 56
+- **letterSpacing**: 56
+- **lineHeight**: 56
+- **mainComponent**: 30
+- **override**: 28
+- **overriddenFields**: 28
+- **imageTransform**: 22
+- **filters**: 22
+- **Vector**: 19
+- **variantProperties**: 17
+- **componentProperties**: 17
+- **State**: 14
+- **Icon**: 12
+- **overrides**: 12
+- **Selected**: 8
+- **Size**: 7
+- **Style**: 6
+- **Configuration**: 6
+- **Show_focus_indicator_58735_1179**: 5
+- **Icon_58665_2327**: 5
+- **Type**: 5
+- **Width**: 5
+- **strokes**: 5
+- **stroke**: 5
+- **Leading_icon_52999_699**: 5
+- **Show_focus_indicator_58718_217**: 5
+- **Trailing_icon_52999_602**: 5
+- **Label_text_53923_200**: 5
+- **Show_trailing_icon**: 5
+- **Icon_70754_196**: 3
+- **Icon__selected__58027_75**: 3
+- **Show_focus_indicator_58732_578**: 3
+- **Label_text_70754_66**: 3
+- **Badge**: 3
+- **Show_label**: 3
+- **layoutGrid**: 3
+- **Alignment**: 2
+- **effect**: 2
+- **offset**: 2
+- **page**: 1
+- **Component**: 1
+- **Navigation_Rail**: 1
+- **Icon_button**: 1
+- **...**: +33 more tags
+
+## Node counts (by `type` attribute)
+- **FRAME**: 106
+- **VARIANT**: 66
+- **TEXT**: 66
+- **INSTANCE**: 30
+- **INSTANCE_SWAP**: 23
+- **IMAGE**: 22
+- **BOOLEAN**: 20
+- **VECTOR**: 19
+- **PAGE**: 1
+- **COMPONENT**: 1
+- **DROP_SHADOW**: 1
+- **INNER_SHADOW**: 1
+
+## Common names by type (top)
+### FRAME
+- `Content` (28)
+- `Image` (22)
+- `State-layer` (6)
+- `state-layer` (5)
+- `Icon_container` (3)
+- `State_layer` (3)
+- `Menu___Fab` (1)
+- `Segments` (1)
+- `Leading___Trailing_icons` (1)
+- `Trailing_elements` (1)
+- `Filter_chips_carousel` (1)
+- `Card_grid` (1)
+- `Card_01` (1)
+- `Card_02` (1)
+- `Card_03` (1)
+- `Card_04` (1)
+- `Card_05` (1)
+- `Card_06` (1)
+- `Card_07` (1)
+- `Card_08` (1)
+- `...` (+25 more)
+
+### TEXT
+- `Title` (22)
+- `Date` (22)
+- `label-text` (5)
+- `Label_text` (3)
+- `Headline` (1)
+- `Supporting-text` (1)
+- `Text` (1)
+- `M` (1)
+
+### INSTANCE
+- `Icon` (12)
+- `Navigation_Rail` (1)
+- `Icon_button` (1)
+- `FAB` (1)
+- `Nav_item_01` (1)
+- `Nav_item_02` (1)
+- `Nav_item_03` (1)
+- `App_bar` (1)
+- `Leading_icon` (1)
+- `Trailing_action_3` (1)
+- `Trailing_action_2` (1)
+- `Trailing_action_1` (1)
+- `Text_content` (1)
+- `Filter_chip_01` (1)
+- `Filter_chip_02` (1)
+- `Selected_icon` (1)
+- `Filter_chip_03` (1)
+- `Filter_chip_04` (1)
+- `Filter_chip_05` (1)
+
+### VECTOR
+- `icon` (19)
+
+### COMPONENT
+- `Examples_Library-Web` (1)
+
+### PAGE
+- `Page_1` (1)
+
+## Sample nodes (for quick inspection)
+- **PAGE** `Page_1` (tag `page`, id `0:1`, box -,- -x-)
+- **COMPONENT** `Examples_Library-Web` (tag `Component`, id `3311:2763`, box 9150,-113 1156x1194)
+- **INSTANCE** `Navigation_Rail` (tag `Navigation_Rail`, id `3311:2560`, box 0,68 72x709)
+- **FRAME** `Menu___Fab` (tag `Frame`, id `I3311:2560;58016:36949`, box 8,44 56x116)
+- **INSTANCE** `Icon_button` (tag `Icon_button`, id `I3311:2560;58016:36950`, box 0,0 56x56)
+- **FRAME** `Content` (tag `Frame`, id `I3311:2560;58016:36950;58665:37620`, box 0,0 56x56)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2560;58016:36950;58665:37621`, box 0,0 56x56)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36950;58665:37622`, box 16,16 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36950;58665:37622;54616:25398`, box 3.00,6 18x12)
+- **INSTANCE** `FAB` (tag `FAB`, id `I3311:2560;58016:36951`, box 0,60 56x56)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2560;58016:36951;57998:43659`, box 0,0 56x56)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36951;57998:43660`, box 16,16 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36951;57998:43660;58031:80734`, box 3.00,3.00 18x18)
+- **FRAME** `Segments` (tag `Frame`, id `I3311:2560;58016:36952`, box 0,200 72x200)
+- **INSTANCE** `Nav_item_01` (tag `Nav_item_01`, id `I3311:2560;58016:36953`, box 0,0 72x64)
+- **FRAME** `Icon_container` (tag `Frame`, id `I3311:2560;58016:36953;58016:36461`, box 8,6 56x32)
+- **FRAME** `State_layer` (tag `Frame`, id `I3311:2560;58016:36953;58016:36462`, box 0,0 56x32)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36953;58431:29466`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36953;58431:29466;54616:25412`, box 2.00,2.00 20x20)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36953;58016:36463`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36953;58016:36463;54616:25410`, box 2.00,2.00 20x20)
+- **TEXT** `Label_text` (tag `Text`, id `I3311:2560;58016:36953;58016:36464`, box 0,42 72x16)
+- **INSTANCE** `Nav_item_02` (tag `Nav_item_02`, id `I3311:2560;58016:36954`, box 0,68 72x64)
+- **FRAME** `Icon_container` (tag `Frame`, id `I3311:2560;58016:36954;58016:36537`, box 8,6 56x32)
+- **FRAME** `State_layer` (tag `Frame`, id `I3311:2560;58016:36954;58016:36538`, box 0,0 56x32)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36954;58027:73908`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36954;58027:73908;54616:25410`, box 2.00,2.00 20x20)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36954;58016:36539`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36954;58016:36539;54616:25412`, box 2.00,2.00 20x20)
+- **TEXT** `Label_text` (tag `Text`, id `I3311:2560;58016:36954;58016:36540`, box 0,42 72x16)
+- **INSTANCE** `Nav_item_03` (tag `Nav_item_03`, id `I3311:2560;58016:36955`, box 0,136 72x64)
+- **FRAME** `Icon_container` (tag `Frame`, id `I3311:2560;58016:36955;58016:36537`, box 8,6 56x32)
+- **FRAME** `State_layer` (tag `Frame`, id `I3311:2560;58016:36955;58016:36538`, box 0,0 56x32)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36955;58027:73908`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36955;58027:73908;54616:25410`, box 2.00,2.00 20x20)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2560;58016:36955;58016:36539`, box 16,4 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2560;58016:36955;58016:36539;54616:25412`, box 2.00,2.00 20x20)
+- **TEXT** `Label_text` (tag `Text`, id `I3311:2560;58016:36955;58016:36540`, box 0,42 72x16)
+- **FRAME** `Content` (tag `Frame`, id `3311:2561`, box 72,92 1065x1166)
+- **INSTANCE** `App_bar` (tag `App_bar`, id `3311:2562`, box 0,0 814x112)
+- **FRAME** `Leading___Trailing_icons` (tag `Frame`, id `I3311:2562;58114:20593`, box 0,0 814x56)
+- **INSTANCE** `Leading_icon` (tag `Leading_icon`, id `I3311:2562;58114:20594`, box 8,8 48x48)
+- **FRAME** `Content` (tag `Frame`, id `I3311:2562;58114:20594;58665:37347`, box 4,4 40x40)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2562;58114:20594;58665:37348`, box 0,0 40x40)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2562;58114:20594;58665:37349`, box 8,8 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2562;58114:20594;58665:37349;54616:25400`, box 4,4 16x16)
+- **FRAME** `Trailing_elements` (tag `Frame`, id `I3311:2562;58114:20595`, box 758,8 48x48)
+- **INSTANCE** `Trailing_action_3` (tag `Trailing_action_3`, id `I3311:2562;58114:20596`, box 0,0 48x48)
+- **FRAME** `Content` (tag `Frame`, id `I3311:2562;58114:20596;58665:37347`, box 4,4 40x40)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2562;58114:20596;58665:37348`, box 0,0 40x40)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2562;58114:20596;58665:37349`, box 8,8 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2562;58114:20596;58665:37349;54616:25410`, box 2.00,2.00 20x20)
+- **INSTANCE** `Trailing_action_2` (tag `Trailing_action_2`, id `I3311:2562;58114:20597`, box 48,0 48x48)
+- **FRAME** `Content` (tag `Frame`, id `I3311:2562;58114:20597;58665:37347`, box 4,4 40x40)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2562;58114:20597;58665:37348`, box 0,0 40x40)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2562;58114:20597;58665:37349`, box 8,8 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2562;58114:20597;58665:37349;54616:25410`, box 2.00,2.00 20x20)
+- **INSTANCE** `Trailing_action_1` (tag `Trailing_action_1`, id `I3311:2562;58114:20598`, box 0,0 48x48)
+- **FRAME** `Content` (tag `Frame`, id `I3311:2562;58114:20598;58665:37347`, box 4,4 40x40)
+- **FRAME** `State-layer` (tag `Frame`, id `I3311:2562;58114:20598;58665:37348`, box 0,0 40x40)
+- **INSTANCE** `Icon` (tag `Icon`, id `I3311:2562;58114:20598;58665:37349`, box 8,8 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2562;58114:20598;58665:37349;54616:25432`, box 10,4 4x16)
+- **INSTANCE** `Text_content` (tag `Text_content`, id `I3311:2562;58114:20599`, box 0,64 814x36)
+- **TEXT** `Headline` (tag `Text`, id `I3311:2562;58114:20599;58114:20549`, box 24,0 766x36)
+- **TEXT** `Supporting-text` (tag `Text`, id `I3311:2562;58114:20599;58114:20550`, box 0,40 528x20)
+- **FRAME** `Filter_chips_carousel` (tag `Frame`, id `3311:2563`, box 0,112 1065x64)
+- **INSTANCE** `Filter_chip_01` (tag `Filter_chip_01`, id `3311:2564`, box 24,16 67x32)
+- **FRAME** `state-layer` (tag `Frame`, id `I3311:2564;53923:28677`, box 0,0 67x32)
+- **TEXT** `label-text` (tag `Text`, id `I3311:2564;53923:28678`, box 16,6 35x20)
+- **INSTANCE** `Filter_chip_02` (tag `Filter_chip_02`, id `3311:2565`, box 95,16 85x32)
+- **FRAME** `state-layer` (tag `Frame`, id `I3311:2565;53923:28484`, box 0,0 85x32)
+- **INSTANCE** `Selected_icon` (tag `Selected_icon`, id `I3311:2565;53923:28485`, box 8,7 18x18)
+- **VECTOR** `icon` (tag `Vector`, id `I3311:2565;53923:28485;54616:25404`, box 2.89,4.48 12.23x9.02)
+- **TEXT** `label-text` (tag `Text`, id `I3311:2565;53923:28486`, box 34,6 35x20)
+- **INSTANCE** `Filter_chip_03` (tag `Filter_chip_03`, id `3311:2566`, box 184,16 67x32)
+- **FRAME** `state-layer` (tag `Frame`, id `I3311:2566;53923:28677`, box 0,0 67x32)
+- **TEXT** `label-text` (tag `Text`, id `I3311:2566;53923:28678`, box 16,6 35x20)
+- **INSTANCE** `Filter_chip_04` (tag `Filter_chip_04`, id `3311:2567`, box 255,16 67x32)
+- **FRAME** `state-layer` (tag `Frame`, id `I3311:2567;53923:28677`, box 0,0 67x32)
+- **TEXT** `label-text` (tag `Text`, id `I3311:2567;53923:28678`, box 16,6 35x20)
+- **INSTANCE** `Filter_chip_05` (tag `Filter_chip_05`, id `3311:2568`, box 326,16 67x32)
+- **FRAME** `state-layer` (tag `Frame`, id `I3311:2568;53923:28677`, box 0,0 67x32)
+- **TEXT** `label-text` (tag `Text`, id `I3311:2568;53923:28678`, box 16,6 35x20)
+- **FRAME** `Card_grid` (tag `Frame`, id `3311:2569`, box 0,176 1065x720)
+- **FRAME** `Card_01` (tag `Frame`, id `3311:2570`, box 24,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2571`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2572`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2573`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2574`, box 0,20 124.71x16)
+- **FRAME** `Card_02` (tag `Frame`, id `3311:2575`, box 172.71,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2576`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2577`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2578`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2579`, box 0,20 124.71x16)
+- **FRAME** `Card_03` (tag `Frame`, id `3311:2580`, box 321.43,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2581`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2582`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2583`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2584`, box 0,20 124.71x16)
+- **FRAME** `Card_04` (tag `Frame`, id `3311:2585`, box 470.14,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2586`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2587`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2588`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2589`, box 0,20 124.71x16)
+- **FRAME** `Card_05` (tag `Frame`, id `3311:2590`, box 618.86,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2591`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2592`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2593`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2594`, box 0,20 124.71x16)
+- **FRAME** `Card_06` (tag `Frame`, id `3311:2595`, box 767.57,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2596`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2597`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2598`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2599`, box 0,20 124.71x16)
+- **FRAME** `Card_07` (tag `Frame`, id `3311:2600`, box 916.29,0 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2601`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2602`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2603`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2604`, box 0,20 124.71x16)
+- **FRAME** `Card_08` (tag `Frame`, id `3311:2605`, box 24,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2606`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2607`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2608`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2609`, box 0,20 124.71x16)
+- **FRAME** `Card_09` (tag `Frame`, id `3311:2610`, box 172.71,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2611`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2612`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2613`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2614`, box 0,20 124.71x16)
+- **FRAME** `Card_10` (tag `Frame`, id `3311:2615`, box 321.43,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2616`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2617`, box 0,124 124.71x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2618`, box 0,0 124.71x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2619`, box 0,20 124.71x16)
+- **FRAME** `Card_11` (tag `Frame`, id `3311:2620`, box 470.14,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2621`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2622`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2623`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2624`, box 0,20 120x16)
+- **FRAME** `Card_12` (tag `Frame`, id `3311:2625`, box 618.86,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2626`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2627`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2628`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2629`, box 0,20 120x16)
+- **FRAME** `Card_13` (tag `Frame`, id `3311:2630`, box 767.57,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2631`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2632`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2633`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2634`, box 0,20 120x16)
+- **FRAME** `Card_14` (tag `Frame`, id `3311:2635`, box 916.29,176 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2636`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2637`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2638`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2639`, box 0,20 120x16)
+- **FRAME** `Card_15` (tag `Frame`, id `3311:2640`, box 24,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2641`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2642`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2643`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2644`, box 0,20 120x16)
+- **FRAME** `Card_16` (tag `Frame`, id `3311:2645`, box 172.71,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2646`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2647`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2648`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2649`, box 0,20 120x16)
+- **FRAME** `Card_17` (tag `Frame`, id `3311:2650`, box 321.43,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2651`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2652`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2653`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2654`, box 0,20 120x16)
+- **FRAME** `Card_18` (tag `Frame`, id `3311:2655`, box 470.14,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2656`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2657`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2658`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2659`, box 0,20 120x16)
+- **FRAME** `Card_19` (tag `Frame`, id `3311:2660`, box 618.86,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2661`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2662`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2663`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2664`, box 0,20 120x16)
+- **FRAME** `Card_20` (tag `Frame`, id `3311:2665`, box 767.57,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2666`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2667`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2668`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2669`, box 0,20 120x16)
+- **FRAME** `Card_21` (tag `Frame`, id `3311:2670`, box 916.29,352 124.71x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2671`, box 0,0 124.71x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2672`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2673`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2674`, box 0,20 120x16)
+- **FRAME** `Card_22` (tag `Frame`, id `3311:2675`, box 24,528 220x160)
+- **FRAME** `Image` (tag `Frame`, id `3311:2676`, box 0,0 220x120)
+- **FRAME** `Content` (tag `Frame`, id `3311:2677`, box 0,124 120x36)
+- **TEXT** `Title` (tag `Text`, id `3311:2678`, box 0,0 120x20)
+- **TEXT** `Date` (tag `Text`, id `3311:2679`, box 0,20 120x16)
+- **FRAME** `Chrome_browser_bar` (tag `Frame`, id `3311:2680`, box 0,0 1156x68)
+- **FRAME** `Icons` (tag `Frame`, id `3311:2681`, box 16,22 96x24)
+- **FRAME** `back` (tag `Frame`, id `3311:2682`, box 0,0 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `3311:2683`, box 4.00,4.00 16.00x16.00)
+- **FRAME** `forward` (tag `Frame`, id `3311:2684`, box 36,0 24x24)
+- **VECTOR** `icon` (tag `Vector`, id `3311:2685`, box 4.00,4.00 16.00x16.00)
+
+## Notes
+- Đây là dữ liệu thiết kế (FigML/XML), không phải HTML.
+- Nếu muốn map sang JavaFX: thường map `FRAME`/`GROUP` → layout container, `TEXT` → `Label`, `VECTOR` → SVG/Path.

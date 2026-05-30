@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.SellerItemsController">
+    <stylesheets>
+        <URL value="@/resources/css/home-page.css" />
+        <URL value="@/resources/css/dashboards.css" />
+    </stylesheets>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="top-bar">
+            <padding>
+                <Insets top="16.0" right="40.0" bottom="16.0" left="40.0" />
+            </padding>
+            <Button styleClass="secondary-button" text="%nav.back" onAction="#onBackHome" />
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER_RIGHT">
+                <Label styleClass="brand-title" text="%seller.title" />
+                <Label styleClass="item-row-meta" text="Manage your auction listings" />
+            </VBox>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <content>
+                <VBox spacing="32.0" styleClass="page-root-inner">
+                    <padding>
+                        <Insets top="32.0" right="40.0" bottom="40.0" left="40.0" />
+                    </padding>
+                    
+                    <HBox spacing="20.0" styleClass="stats-container">
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="stat-label" text="TOTAL ITEMS" />
+                            <Label fx:id="totalItemsLabel" styleClass="stat-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="stat-label" text="ACTIVE AUCTIONS" />
+                            <Label fx:id="activeAuctionsLabel" styleClass="stat-value" text="0" />
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label styleClass="stat-label" text="SOLD ITEMS" />
+                            <Label fx:id="soldItemsLabel" styleClass="stat-value" text="0" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="32.0">
+                        <VBox spacing="16.0" HBox.hgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label styleClass="section-title" text="%seller.myItems" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="itemCountSubLabel" styleClass="item-row-meta" text="0 items found" />
+                            </HBox>
+                            <ListView fx:id="itemListView" prefHeight="600.0" styleClass="modern-list-view" />
+                        </VBox>
+
+                        <VBox spacing="24.0" styleClass="form-card" prefWidth="420.0" minWidth="420.0">
+                            <Label styleClass="form-header" text="%seller.formTitle" />
+                            
+                            <VBox spacing="8.0">
+                                <Label styleClass="form-label" text="Item Category" />
+                                <ComboBox fx:id="typeCombo" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="8.0">
+                                <Label styleClass="form-label" text="Item Name" />
+                                <TextField fx:id="nameField" promptText="%seller.prompt.name" />
+                            </VBox>
+
+                            <VBox spacing="8.0">
+                                <Label styleClass="form-label" text="Description" />
+                                <TextArea fx:id="descriptionArea" promptText="%seller.prompt.description" prefRowCount="4" wrapText="true" />
+                            </VBox>
+
+                            <HBox spacing="16.0">
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <Label styleClass="form-label" text="Starting Bid ($)" />
+                                    <TextField fx:id="startingBidField" promptText="0.00" />
+                                </VBox>
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <Label styleClass="form-label" text="Image URL" />
+                                    <TextField fx:id="imageUrlField" promptText="http://..." />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="16.0">
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <Label styleClass="form-label" text="Start Time (yyyy-MM-dd HH:mm)" />
+                                    <TextField fx:id="sessionStartField" promptText="Blank for immediately" />
+                                </VBox>
+                                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                                    <Label styleClass="form-label" text="End Time (yyyy-MM-dd HH:mm)" />
+                                    <TextField fx:id="sessionEndField" promptText="Blank for +2 hours" />
+                                </VBox>
+                            </HBox>
+
+                            <VBox spacing="12.0" style="-fx-padding: 10 0 0 0;">
+                                <HBox spacing="12.0">
+                                    <Button styleClass="primary-button" text="%seller.add" onAction="#onAddItem" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                    <Button styleClass="secondary-button" text="%seller.update" onAction="#onUpdateItem" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                </HBox>
+                                <Button styleClass="danger-button" text="%seller.delete" onAction="#onDeleteItem" maxWidth="Infinity" />
+                                <Region prefHeight="10" />
+                                <Button styleClass="primary-button" text="%seller.createSession"
+                                    onAction="#onCreateSession" maxWidth="Infinity">
+                                    <tooltip>
+                                        <Tooltip text="Select an Item, set Start/End times, and click here to create an Auction for it." />
+                                    </tooltip>
+                                </Button>
+                            </VBox>
+                            
+                            <Label fx:id="messageLabel" styleClass="result-label" text="" wrapText="true" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

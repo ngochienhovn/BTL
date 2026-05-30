@@ -1,0 +1,73 @@
+2026-05-29 22:40:16 [com.ltnc.auction.server.ServerMain.main()] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Starting...
+2026-05-29 22:40:17 [com.ltnc.auction.server.ServerMain.main()] INFO  com.zaxxer.hikari.pool.HikariPool - BidMasterHiPool - Added connection conn0: url=jdbc:h2:./data/auction_db user=SA
+2026-05-29 22:40:17 [com.ltnc.auction.server.ServerMain.main()] INFO  com.zaxxer.hikari.HikariDataSource - BidMasterHiPool - Start completed.
+2026-05-29 22:40:17 [com.ltnc.auction.server.ServerMain.main()] INFO  c.l.a.server.db.SchemaInitializer - Database schema initialized successfully
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.ltnc.auction.server.db.DataSeeder - Fake seed data inserted successfully (7 auction use cases)
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.ltnc.auction.server.db.DataSeeder - Demo users: demo@gmail.com / seller@gmail.com / admin@gmail.com
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.ltnc.auction.server.db.DataSeeder - Extra users: binh@gmail.com, hoa@gmail.com, anh@gmail.com, khanh@gmail.com
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.l.a.server.service.AuctionService - AuctionService initialized with 3 active auctions
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.l.a.s.service.AuctionStateManager - AuctionStateManager started (1s tick)
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  com.ltnc.auction.server.ServerMain - BidMaster server listening on TCP port 9090 (override with arg[0] or AUCTION_SERVER_PORT)
+2026-05-29 22:40:20 [com.ltnc.auction.server.ServerMain.main()] INFO  c.l.a.server.network.SocketServer - Socket accept loop started on port 9090
+2026-05-29 22:57:18 [pool-2-thread-3] ERROR c.l.a.server.network.ClientHandler - Exception or Error in ClientHandler run for client: /127.0.0.1:49873
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:316)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:354)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:798)
+	at java.base/java.net.Socket$SocketInputStream.implRead(Socket.java:974)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:964)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:279)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:322)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:186)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:183)
+	at java.base/java.io.BufferedReader.fill(BufferedReader.java:166)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:333)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:400)
+	at com.ltnc.auction.server.network.ClientHandler.run(ClientHandler.java:72)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-05-29 22:57:19 [pool-2-thread-1] ERROR c.l.a.server.network.ClientHandler - Exception or Error in ClientHandler run for client: /127.0.0.1:49862
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:316)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:354)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:798)
+	at java.base/java.net.Socket$SocketInputStream.implRead(Socket.java:974)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:964)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:279)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:322)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:186)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:183)
+	at java.base/java.io.BufferedReader.fill(BufferedReader.java:166)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:333)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:400)
+	at com.ltnc.auction.server.network.ClientHandler.run(ClientHandler.java:72)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-05-29 22:57:21 [pool-2-thread-2] ERROR c.l.a.server.network.ClientHandler - Exception or Error in ClientHandler run for client: /127.0.0.1:49870
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:316)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:354)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:798)
+	at java.base/java.net.Socket$SocketInputStream.implRead(Socket.java:974)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:964)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:279)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:322)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:186)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:183)
+	at java.base/java.io.BufferedReader.fill(BufferedReader.java:166)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:333)
+	at java.base/java.io.BufferedReader.readLine(BufferedReader.java:400)
+	at com.ltnc.auction.server.network.ClientHandler.run(ClientHandler.java:72)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2026-05-29 22:57:50 [pool-4-thread-1] INFO  c.l.a.s.service.BroadcastManager - Swept 1 dead connections. Active sessions left: 2
+2026-05-29 22:58:20 [pool-4-thread-1] INFO  c.l.a.s.service.BroadcastManager - Swept 2 dead connections. Active sessions left: 0

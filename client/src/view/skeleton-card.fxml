@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<VBox prefWidth="284.0" prefHeight="400.0" styleClass="skeleton-card" spacing="12.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml" fx:controller="app.controller.SkeletonCardController">
+   <children>
+      <Region fx:id="imageBone" prefHeight="190.0" prefWidth="284.0" styleClass="skeleton-bone" />
+      <VBox spacing="10.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <children>
+            <Region prefHeight="24.0" prefWidth="200.0" styleClass="skeleton-bone" />
+            <Region prefHeight="16.0" prefWidth="240.0" styleClass="skeleton-bone" />
+            <Region prefHeight="16.0" prefWidth="150.0" styleClass="skeleton-bone" />
+            <Region prefHeight="40.0" prefWidth="244.0" styleClass="skeleton-bone" />
+         </children>
+      </VBox>
+   </children>
+</VBox>

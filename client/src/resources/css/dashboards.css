@@ -1,0 +1,180 @@
+/**
+ * BidMaster Dashboards — Shared styles for Seller, Admin, and Profile.
+ * Extends the Slate/Indigo theme with card-based layouts and data tables.
+ */
+
+.dashboard-root {
+    -fx-background-color: -color-bg-subtle;
+}
+
+/* Sidebar styling */
+.sidebar {
+    -fx-background-color: -color-bg-default;
+    -fx-border-color: transparent -color-border-default transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 32 24 32 24;
+}
+
+/* Stats Cards */
+.stats-container {
+    -fx-spacing: 20;
+    -fx-padding: 0 0 24 0;
+}
+
+.stat-card {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 16;
+    -fx-border-color: -color-border-subtle;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-padding: 24;
+    -fx-min-width: 200;
+    -fx-effect: dropshadow(three-pass-box, rgba(15, 23, 42, 0.02), 15, 0, 0, 5);
+}
+
+.stat-card:hover {
+    -fx-translate-y: -4;
+    -fx-border-color: -color-accent-muted;
+    -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.06), 20, 0, 0, 8);
+}
+
+.stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -color-fg-default;
+}
+
+.stat-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-fg-muted;
+    -fx-text-transform: uppercase;
+}
+
+/* Data Table / List Item Modernization */
+.item-row {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 14;
+    -fx-border-color: -color-border-subtle;
+    -fx-border-width: 1;
+    -fx-border-radius: 14;
+    -fx-padding: 16;
+    -fx-spacing: 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(three-pass-box, rgba(15, 23, 42, 0.01), 10, 0, 0, 2);
+}
+
+.item-row:hover {
+    -fx-border-color: -color-accent-muted;
+    -fx-translate-x: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(99, 102, 241, 0.06), 12, 0, 0, 4);
+}
+
+.form-action-button:hover {
+    -fx-background-color: derive(-color-accent-emphasis, -10%);
+    -fx-translate-y: -2;
+    -fx-effect: dropshadow(three-pass-box, rgba(79, 70, 229, 0.4), 12, 0, 0, 6);
+}
+
+/* Modern List View */
+.modern-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modern-list-view .list-cell {
+    -fx-padding: 10 14;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: transparent;
+}
+.modern-list-view .list-cell:empty {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modern-list-view .list-cell:hover {
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-subtle;
+    -fx-cursor: hand;
+}
+.modern-list-view .list-cell:selected {
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent-fg;
+    -fx-border-color: -color-accent-muted;
+}
+.modern-list-view .list-cell:selected .item-row {
+    -fx-border-color: -color-accent-emphasis;
+    -fx-background-color: -color-bg-subtle;
+    -fx-effect: dropshadow(three-pass-box, rgba(79, 70, 229, 0.15), 15, 0, 0, 4);
+}
+
+.warning-button {
+    -fx-background-color: -color-bg-default;
+    -fx-text-fill: -color-warning-fg;
+    -fx-border-color: -color-warning-muted;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+.warning-button:hover {
+    -fx-background-color: -color-warning-subtle;
+    -fx-border-color: -color-warning-emphasis;
+}
+.warning-button:focused {
+    -fx-effect: dropshadow(gaussian, -color-warning-muted, 10, 0.3, 0, 0);
+}
+
+/* Focus Glow for Forms */
+.text-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: -color-accent-emphasis;
+    -fx-effect: dropshadow(three-pass-box, rgba(79, 70, 229, 0.3), 8, 0, 0, 0);
+}
+
+.item-row-image {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.item-row-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-fg-default;
+}
+
+.item-row-meta {
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-fg-muted;
+}
+
+.item-row-price {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-accent-fg;
+}
+
+/* Modern Form Panels */
+.form-card {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 20;
+    -fx-border-color: -color-border-subtle;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-padding: 32;
+    -fx-spacing: 24;
+    -fx-effect: dropshadow(three-pass-box, rgba(15, 23, 42, 0.03), 25, 0, 0, 10);
+}
+
+.form-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -color-fg-default;
+    -fx-padding: 0 0 8 0;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-fg-default;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+
+<!-- Placeholder: không được MainApp load; giữ FXML hợp lệ cho tooling / tài liệu. -->
+<BorderPane stylesheets="@/resources/css/home-page.css" xmlns="http://javafx.com/javafx/21">
+    <center>
+        <Label styleClass="result-label" text="view.fxml — unused root">
+            <padding>
+                <Insets top="24.0" right="24.0" bottom="24.0" left="24.0" />
+            </padding>
+        </Label>
+    </center>
+</BorderPane>
