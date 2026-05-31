@@ -1,0 +1,18 @@
+Hien: Minor fix
+Diep: Minor fix
+PAnh: Minor fix
+
+=> Làm việc không trao đổi
+
+=> Merge: done 3/4
+
+HAnh: 
+    Chưa đẩy code sprint 3 lên branch (?)
+    Folder code lộn xộn, tạo nhiều file pom.xml làm gì vậy đây là file môi trường
+    ServerMessageCliener chưa tạo, không có luồng nhận broadcaster?
+    AuctionDetailController ?
+    auction_detail.fxml ?
+
+    => Chưa done sprint 4 => Thiếu nhiều quá anh không merge được đâu nhé
+
+Sprint 5, 6 (Done)

@@ -5,7 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ltnc.auction</groupId>
+<<<<<<< HEAD
   <artifactId>auction-system</artifactId>
+=======
+  <artifactId>BTL</artifactId>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -26,6 +30,7 @@
 
   <build>
     <pluginManagement>
+<<<<<<< HEAD
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -40,3 +45,20 @@
     </pluginManagement>
   </build>
 </project>
+=======
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+  </build>
+</project>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645

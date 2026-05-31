@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🏆 BidMaster - Hệ Thống Đấu Giá Trực Tuyến Phân Tán (JavaFX)
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white) ![JavaFX](https://img.shields.io/badge/JavaFX-007396?style=for-the-badge&logo=java&logoColor=white) ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white) ![Socket](https://img.shields.io/badge/TCP_Socket-000000?style=for-the-badge&logo=socket.io&logoColor=white)
@@ -55,3 +56,50 @@ mvn javafx:run -pl client
 
 ---
 *Dự án thuộc môn học Lập trình Nâng Cao (LTNC).*
+=======
+
+
+# BTL - DAO Pattern & H2 Database
+
+## Giới thiệu
+Project này triển khai tầng truy cập dữ liệu (**DAO Pattern**) cho hệ thống đấu giá, sử dụng **JDBC** để kết nối với **H2 Database**.
+
+Nội dung chính của phần này gồm:
+- Thiết kế kết nối CSDL bằng `DBConnection`
+- Khởi tạo schema bằng `SchemaInitializer`
+- Viết lớp `UserDAO` để thao tác với bảng `users`
+- Viết lớp `ItemDAO` để thao tác với bảng `items`
+- Thực hiện các thao tác CRUD cơ bản bằng câu lệnh SQL
+
+---
+
+## Công nghệ sử dụng
+- Java
+- JDBC
+- H2 Database
+- Maven
+
+---
+
+## Cấu trúc thư mục
+```text
+BTL
+├── db
+├── docs
+├── server
+│   ├── db
+│   └── src
+│       ├── dao
+│       │   ├── ItemDAO.java
+│       │   └── UserDAO.java
+│       └── db
+│           ├── DBConnection.java
+│           └── SchemaInitializer.java
+├── target
+├── pom.xml
+├── shared
+└── README.md
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
+## Video demo và báo cáo:
+| 📄 Báo cáo PDF | https://drive.google.com/file/d/126hJE9RB49M11bhMWnn55jzKGWXp-pcP/view?usp=sharing |
+| 🎬 Video Demo | https://drive.google.com/file/d/1jC4dbAIqf2czpwytyAgga6qUgqcvFhIk/view?usp=sharing |

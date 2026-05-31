@@ -1,8 +1,13 @@
 package com.ltnc.auction.server.db;
 
+<<<<<<< HEAD
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
+=======
+import java.sql.Connection;
+import java.sql.DriverManager;
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
 import java.sql.SQLException;
 
 public class DBConnection {
@@ -10,6 +15,7 @@ public class DBConnection {
     private static final String USER = "sa";
     private static final String PASS = "";
 
+<<<<<<< HEAD
     private static final ThreadLocal<Connection> threadConnection = new ThreadLocal<>();
     private static final ThreadLocal<Integer> transactionDepth = ThreadLocal.withInitial(() -> 0);
     private static final HikariDataSource dataSource;
@@ -113,3 +119,11 @@ public class DBConnection {
     }
 }
 
+=======
+    private DBConnection() {}
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+}
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645

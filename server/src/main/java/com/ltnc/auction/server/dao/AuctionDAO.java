@@ -7,14 +7,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< HEAD
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+=======
+import java.sql.Timestamp;
+import java.sql.Types;
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
 import java.util.ArrayList;
 import java.util.List;
 
 public class AuctionDAO {
 
+<<<<<<< HEAD
     public Long insert(Auction auction) {
         String sql = "INSERT INTO auctions (item_id, title, description, category, starting_bid, current_bid, " +
                      "start_time, end_time, status, highest_bidder_id, winner_email, seller_email, image_url) " +
@@ -64,6 +70,10 @@ public class AuctionDAO {
 
     public List<Auction> findAll() {
         String sql = "SELECT * FROM auctions WHERE is_deleted = FALSE ORDER BY id";
+=======
+    public List<Auction> findAll() {
+        String sql = "SELECT * FROM auctions ORDER BY id DESC";
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
         List<Auction> auctions = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -71,6 +81,7 @@ public class AuctionDAO {
             while (rs.next()) {
                 auctions.add(mapAuction(rs));
             }
+<<<<<<< HEAD
         } catch (SQLException e) {
             throw new DaoException("Error fetching all auctions", e);
         }
@@ -111,6 +122,25 @@ public class AuctionDAO {
             throw new DaoException("Error finding auctions with status: " + status, e);
         }
         return auctions;
+=======
+            return auctions;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot query auctions", e);
+        }
+    }
+
+    public Auction findById(Long id) {
+        String sql = "SELECT * FROM auctions WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? mapAuction(rs) : null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find auction by id", e);
+        }
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
     }
 
     public boolean updateCurrentBid(Long auctionId, BigDecimal newBid, Long highestBidderId) {
@@ -118,6 +148,7 @@ public class AuctionDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBigDecimal(1, newBid);
+<<<<<<< HEAD
             ps.setObject(2, highestBidderId);
             ps.setLong(3, auctionId);
             return ps.executeUpdate() > 0;
@@ -198,6 +229,32 @@ public class AuctionDAO {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException("Error deleting auction with id: " + id, e);
+=======
+            if (highestBidderId == null) {
+                ps.setNull(2, Types.BIGINT);
+            } else {
+                ps.setLong(2, highestBidderId);
+            }
+            ps.setLong(3, auctionId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update current bid", e);
+        }
+    }
+
+    public boolean updateStatus(Long auctionId, String status)
+    {
+        String sql = "UPDATE auctions SET status = ? WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) 
+        {
+            ps.setString(1, status);
+            ps.setLong(2, auctionId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update status", e);
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
         }
     }
 
@@ -207,6 +264,7 @@ public class AuctionDAO {
         auction.setItemId(rs.getLong("item_id"));
         auction.setTitle(rs.getString("title"));
         auction.setDescription(rs.getString("description"));
+<<<<<<< HEAD
         auction.setCategory(rs.getString("category"));
         auction.setStartingBid(rs.getBigDecimal("starting_bid"));
         auction.setCurrentBid(rs.getBigDecimal("current_bid"));
@@ -220,6 +278,25 @@ public class AuctionDAO {
         auction.setWinnerEmail(rs.getString("winner_email"));
         auction.setSellerEmail(rs.getString("seller_email"));
         auction.setImageUrl(rs.getString("image_url"));
+=======
+        auction.setStartingBid(rs.getBigDecimal("starting_bid"));
+        auction.setCurrentBid(rs.getBigDecimal("current_bid"));
+        auction.setStatus(rs.getString("status"));
+
+        long highestBidderId = rs.getLong("highest_bidder_id");
+        if (!rs.wasNull()) {
+            auction.setHighestBidderId(highestBidderId);
+        }
+
+        Timestamp startTime = rs.getTimestamp("start_time");
+        if (startTime != null) {
+            auction.setStartTime(startTime.toLocalDateTime());
+        }
+        Timestamp endTime = rs.getTimestamp("end_time");
+        if (endTime != null) {
+            auction.setEndTime(endTime.toLocalDateTime());
+        }
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
         return auction;
     }
 }

@@ -6,7 +6,11 @@
 
   <parent>
     <groupId>com.ltnc.auction</groupId>
+<<<<<<< HEAD
     <artifactId>auction-system</artifactId>
+=======
+    <artifactId>BTL</artifactId>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -29,9 +33,15 @@
     </dependency>
 
     <dependency>
+<<<<<<< HEAD
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.5.3</version>
+=======
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
     </dependency>
 
     <dependency>
@@ -48,6 +58,7 @@
     </dependency>
 
     <dependency>
+<<<<<<< HEAD
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>2.3.0</version>
@@ -70,6 +81,20 @@
       <version>3.1.8</version>
     </dependency>
 
+=======
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.12.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>5.12.0</version>
+      <scope>test</scope>
+    </dependency>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
   </dependencies>
 
   <build>

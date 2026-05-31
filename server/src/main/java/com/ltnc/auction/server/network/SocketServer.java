@@ -1,14 +1,24 @@
 package com.ltnc.auction.server.network;
 
+<<<<<<< HEAD
 import com.ltnc.auction.server.service.AuctionService;
 import com.ltnc.auction.server.service.AuthService;
 import com.ltnc.auction.server.service.BroadcastManager;
 import com.ltnc.auction.server.service.ItemService;
+=======
+import com.ltnc.auction.server.services.AuthService;
+import com.ltnc.auction.server.services.ItemService;
+import com.ltnc.auction.server.services.AuctionService;
+import com.ltnc.auction.server.services.WalletService;
+import com.ltnc.auction.server.network.AuctionBroadcaster;
+
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+<<<<<<< HEAD
 import java.util.concurrent.TimeUnit;
 import com.ltnc.auction.server.db.DBConnection;
 import org.slf4j.Logger;
@@ -102,6 +112,42 @@ public class SocketServer {
             }
         } catch (IOException e) {
             LOG.error("Server failed on port {}", port, e);
+=======
+
+public class SocketServer {
+    private final int port;
+    private final AuthService authService;
+    private final ItemService itemService;
+    private final AuctionService auctionService;
+    private final WalletService walletService;
+    private final AuctionBroadcaster broadcasterService;
+    private final ExecutorService executor = Executors.newFixedThreadPool(16);
+
+    public SocketServer(
+            int port,
+            AuthService authService,
+            ItemService itemService,
+            AuctionService auctionService,
+            WalletService walletService,
+            AuctionBroadcaster broadcasterService
+    ) {
+        this.port = port;
+        this.authService = authService;
+        this.itemService = itemService;
+        this.auctionService = auctionService;
+        this.walletService = walletService;
+        this.broadcasterService = broadcasterService;
+    }
+
+    public void start() {
+        System.out.println("[server] Starting on port " + port);
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                executor.submit(new ClientHandler(socket, authService, itemService, auctionService, walletService, broadcasterService));
+            }
+        } catch (IOException e) {
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
             throw new RuntimeException("Server failed to start", e);
         }
     }

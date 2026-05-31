@@ -6,7 +6,11 @@
 
   <parent>
     <groupId>com.ltnc.auction</groupId>
+<<<<<<< HEAD
     <artifactId>auction-system</artifactId>
+=======
+    <artifactId>BTL</artifactId>
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
     <version>0.1.0-SNAPSHOT</version>
   </parent>
 
@@ -14,4 +18,8 @@
   <packaging>jar</packaging>
 
   <name>shared</name>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a4a9980ce3593461ea601ec5d280f231fec24645
 </project>
